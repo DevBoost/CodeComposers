@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: CodeComposers Library
+Bundle-SymbolicName: de.devboost.codecomposers
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: DevBoost GmbH
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Export-Package: de.devboost.codecomposers,
+ de.devboost.codecomposers.antlr,
+ de.devboost.codecomposers.java,
+ de.devboost.codecomposers.manifest,
+ de.devboost.codecomposers.util,
+ de.devboost.codecomposers.xml
