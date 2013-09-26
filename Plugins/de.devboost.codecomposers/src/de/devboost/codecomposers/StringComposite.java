@@ -92,7 +92,7 @@ public class StringComposite {
 	// character, because the files that are generated using this StringComposite
 	// shall look the same on all platforms. Eclipse does understand the different
 	// kinds of line separators anyway and treats them correctly on all platforms.
-	public static final String LINE_BREAK = "\n";
+	public static final String UNIX_LINE_BREAK = "\n";
 	
 	private List<StringComponent> components = new ArrayList<StringComponent>();
 
@@ -101,6 +101,8 @@ public class StringComposite {
 	private List<String> indentationStoppers = new ArrayList<String>();
 
 	private boolean enabled;
+
+	private String lineBreak = UNIX_LINE_BREAK;
 
 	public StringComposite() {
 		this(true);
@@ -124,7 +126,7 @@ public class StringComposite {
 	}
 
 	public StringComposite addLineBreak() {
-		add(LINE_BREAK);
+		add(getLineBreak());
 		return this;
 	}
 	
@@ -165,7 +167,7 @@ public class StringComposite {
 				}
 				builder.append(text);
 				if (doLineBreaks && isLineBreaker(component)) {
-					builder.append(LINE_BREAK);
+					builder.append(getLineBreak());
 				}
 			}
 			if (isIndendationStarter(component)) {
@@ -176,6 +178,14 @@ public class StringComposite {
 			return "";
 		}
 		return builder.toString();
+	}
+
+	public String getLineBreak() {
+		return lineBreak;
+	}
+	
+	public void setLineBreak(String lineBreak) {
+		this.lineBreak = lineBreak;
 	}
 
 	private void enableComponents() {
