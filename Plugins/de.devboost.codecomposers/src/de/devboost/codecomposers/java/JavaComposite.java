@@ -36,6 +36,7 @@ public class JavaComposite extends StringComposite {
 	private Map<String, String> getters = new LinkedHashMap<String, String>();
 	private Map<String, String[]> getterDocs = new LinkedHashMap<String, String[]>();
 	private Map<String, String> setters = new LinkedHashMap<String, String>();
+	private ImportsPlaceholder importsPlaceholder;
 
 	public JavaComposite() {
 		super(true);
@@ -289,5 +290,21 @@ public class JavaComposite extends StringComposite {
 		}
 		add("}");
 		addLineBreak();
+	}
+
+	public void addImportsPlaceholder() {
+		if (this.importsPlaceholder != null) {
+			throw new IllegalArgumentException("Can't add placeholder for imports twice.");
+		}
+		this.importsPlaceholder = new ImportsPlaceholder();
+		add(this.importsPlaceholder);
+	}
+
+	public void addClassName(String qualifiedClassName) {
+		add(this.importsPlaceholder.getClassName(qualifiedClassName));
+	}
+
+	public void addImplicitImport(String simpleClassName) {
+		this.importsPlaceholder.addImplicitImport(simpleClassName);
 	}
 }
