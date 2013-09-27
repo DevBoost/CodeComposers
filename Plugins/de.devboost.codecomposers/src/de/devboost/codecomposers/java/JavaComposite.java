@@ -300,11 +300,11 @@ public class JavaComposite extends StringComposite {
 		add(this.importsPlaceholder);
 	}
 
-	public void addClassName(String qualifiedClassName) {
+	public String getClassName(String qualifiedClassName) {
 		if (this.importsPlaceholder == null) {
 			throw new IllegalArgumentException("No placeholder for imports found.");
 		}
-		add(this.importsPlaceholder.getClassName(qualifiedClassName));
+		return this.importsPlaceholder.getClassName(qualifiedClassName);
 	}
 
 	public void addImplicitImport(String simpleClassName) {

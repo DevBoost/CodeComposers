@@ -30,8 +30,7 @@ public class ImportsTest {
 		jc.add("package com.pany;");
 		jc.addImportsPlaceholder();
 		jc.add("public class MyClass {");
-		jc.addClassName("com.pany.OtherClass");
-		jc.add(" myField;");
+		jc.add(jc.getClassName("com.pany.OtherClass") +  " myField;");
 		jc.add("}");
 		
 		String result = getCleanResult(jc);
@@ -50,10 +49,8 @@ public class ImportsTest {
 		jc.add("package com.pany;");
 		jc.addImportsPlaceholder();
 		jc.add("public class MyClass {");
-		jc.addClassName("com.pany.OtherClass");
-		jc.add(" myField1;");
-		jc.addClassName("third.party.OtherClass");
-		jc.add(" myField2;");
+		jc.add(jc.getClassName("com.pany.OtherClass") + " myField1;");
+		jc.add(jc.getClassName("third.party.OtherClass") + " myField2;");
 		jc.add("}");
 		
 		String result = getCleanResult(jc);
@@ -74,8 +71,7 @@ public class ImportsTest {
 		jc.addImportsPlaceholder();
 		jc.add("public class MyClass {");
 		jc.addImplicitImport("MyClass");
-		jc.addClassName("third.party.MyClass");
-		jc.add(" myField1;");
+		jc.add(jc.getClassName("third.party.MyClass") + " myField1;");
 		jc.add("}");
 		
 		String result = getCleanResult(jc);
@@ -94,10 +90,8 @@ public class ImportsTest {
 		jc.addImportsPlaceholder();
 		jc.add("public class MyClass {");
 		jc.addImplicitImport("MyClass");
-		jc.addClassName("third.party.OtherClass1");
-		jc.add(" myField1;");
-		jc.addClassName("third.party.OtherClass2");
-		jc.add(" myField2;");
+		jc.add(jc.getClassName("third.party.OtherClass1") + " myField1;");
+		jc.add(jc.getClassName("third.party.OtherClass2") + " myField2;");
 		jc.add("}");
 		
 		String result = getCleanResult(jc, false);
