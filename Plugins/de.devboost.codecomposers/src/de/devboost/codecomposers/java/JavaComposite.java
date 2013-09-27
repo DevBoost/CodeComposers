@@ -296,15 +296,21 @@ public class JavaComposite extends StringComposite {
 		if (this.importsPlaceholder != null) {
 			throw new IllegalArgumentException("Can't add placeholder for imports twice.");
 		}
-		this.importsPlaceholder = new ImportsPlaceholder();
+		this.importsPlaceholder = new ImportsPlaceholder(getLineBreak());
 		add(this.importsPlaceholder);
 	}
 
 	public void addClassName(String qualifiedClassName) {
+		if (this.importsPlaceholder == null) {
+			throw new IllegalArgumentException("No placeholder for imports found.");
+		}
 		add(this.importsPlaceholder.getClassName(qualifiedClassName));
 	}
 
 	public void addImplicitImport(String simpleClassName) {
+		if (this.importsPlaceholder == null) {
+			throw new IllegalArgumentException("No placeholder for imports found.");
+		}
 		this.importsPlaceholder.addImplicitImport(simpleClassName);
 	}
 }

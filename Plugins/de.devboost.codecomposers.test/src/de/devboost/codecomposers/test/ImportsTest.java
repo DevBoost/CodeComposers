@@ -16,6 +16,7 @@
 package de.devboost.codecomposers.test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
@@ -86,11 +87,42 @@ public class ImportsTest {
 		);
 	}
 
+	@Test
+	public void testMultipleImports() {
+		JavaComposite jc = new JavaComposite();
+		jc.add("package com.pany;");
+		jc.addImportsPlaceholder();
+		jc.add("public class MyClass {");
+		jc.addImplicitImport("MyClass");
+		jc.addClassName("third.party.OtherClass1");
+		jc.add(" myField1;");
+		jc.addClassName("third.party.OtherClass2");
+		jc.add(" myField2;");
+		jc.add("}");
+		
+		String result = getCleanResult(jc, false);
+		print(result);
+		
+		String import1 = "import third.party.OtherClass1;";
+		String import2 = "import third.party.OtherClass2;";
+		assertTrue("Line break between imports expected.", result.contains(import1 + "\n" + import2));
+	}
+
 	private String getCleanResult(JavaComposite jc) {
+		return getCleanResult(jc, true);
+	}
+
+	private String getCleanResult(JavaComposite jc, boolean removeBreaks) {
 		String result = jc.toString();
-		result = result.replace("\n", "");
+		if (removeBreaks) {
+			result = result.replace("\n", "");
+		}
 		result = result.replace("\t", "");
-		System.out.println(">>>" + result + "<<<");
+		print(result);
 		return result;
+	}
+
+	private void print(String result) {
+		System.out.println(">>>" + result + "<<<");
 	}
 }

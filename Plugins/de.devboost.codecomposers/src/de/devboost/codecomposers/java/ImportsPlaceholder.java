@@ -23,9 +23,11 @@ import de.devboost.codecomposers.StringComponent;
 public class ImportsPlaceholder extends StringComponent {
 	
 	private Map<String, String> qualifiedImports = new LinkedHashMap<String, String>();
+	private String lineBreak;
 
-	public ImportsPlaceholder() {
+	public ImportsPlaceholder(String lineBreak) {
 		super(null, null);
+		this.lineBreak = lineBreak;
 	}
 
 	public String getClassName(String qualifiedClassName) {
@@ -62,6 +64,7 @@ public class ImportsPlaceholder extends StringComponent {
 			text.append("import ");
 			text.append(qualifiedImport);
 			text.append(";");
+			text.append(lineBreak);
 		}
 		return text.toString();
 	}

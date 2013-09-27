@@ -104,7 +104,6 @@ public class JavaCompositeTest {
 		assertEquals("{var1var1}{}", string);
 	}
 
-
 	@Test
 	public void testScoping4() {
 		JavaComposite sc = new JavaComposite();
@@ -169,6 +168,18 @@ public class JavaCompositeTest {
 				"/**" + LINE_BREAK + " * some comment" + LINE_BREAK + " */" + LINE_BREAK,
 				new String[] {"/**", " * some comment", " */"}
 		);
+	}
+	
+	@Test
+	public void testConstructor() {
+		JavaComposite jc = new JavaComposite();
+		
+		jc.add("public ");
+		jc.add("MyClass");
+		jc.add("(");
+		jc.add(") {");
+		jc.add("}");
+		assertEquals("Wron code.", "public MyClass() {\n}\n", jc.toString());
 	}
 
 	private void assertComposition(String expectedResult, String... components) {

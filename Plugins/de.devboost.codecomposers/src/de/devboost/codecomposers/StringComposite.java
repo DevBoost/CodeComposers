@@ -114,10 +114,16 @@ public class StringComposite {
 	}
 	
 	public void addIndentationStarter(String starter) {
+		if (starter == null) {
+			throw new IllegalArgumentException("Can't use null as indentation starter.");
+		}
 		indentationStarters.add(starter);
 	}
 
 	public void addIndentationStopper(String stopper) {
+		if (stopper == null) {
+			throw new IllegalArgumentException("Can't use null as indentation starter.");
+		}
 		indentationStoppers.add(stopper);
 	}
 
