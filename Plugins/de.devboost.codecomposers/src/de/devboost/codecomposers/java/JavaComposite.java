@@ -299,6 +299,10 @@ public class JavaComposite extends StringComposite {
 		this.importsPlaceholder = new ImportsPlaceholder(getLineBreak());
 		add(this.importsPlaceholder);
 	}
+	
+	public String getClassName(Class<?> clazz) {
+		return getClassName(clazz.getName());
+	}
 
 	public String getClassName(String qualifiedClassName) {
 		if (this.importsPlaceholder == null) {

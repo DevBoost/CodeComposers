@@ -61,6 +61,10 @@ public class ImportsPlaceholder extends StringComponent {
 			if (qualifiedImport == null) {
 				continue;
 			}
+			// Do not import classes that are imported by default
+			if (qualifiedImport.startsWith("java.lang.")) {
+				continue;
+			}
 			text.append("import ");
 			text.append(qualifiedImport);
 			text.append(";");

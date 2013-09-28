@@ -84,6 +84,51 @@ public class ImportsTest {
 	}
 
 	@Test
+	public void testImplicitImportFromJavaLangPackage1() {
+		JavaComposite jc = new JavaComposite();
+		jc.add("package com.pany;");
+		jc.addImportsPlaceholder();
+		jc.add("public class MyClass {");
+		// We do not expect an import for java.lang.Throwable as is it imported
+		// by default
+		jc.add(jc.getClassName("java.lang.Throwable") + " myField1;");
+		jc.add(jc.getClassName("third.party.Throwable") + " myField2;");
+		jc.add("}");
+		
+		String result = getCleanResult(jc);
+		assertEquals(result, 
+			"package com.pany;" +
+			"public class MyClass {" +
+			"Throwable myField1;" +
+			"third.party.Throwable myField2;" +
+			"}"
+		);
+	}
+
+	@Test
+	public void testImplicitImportFromJavaLangPackage2() {
+		JavaComposite jc = new JavaComposite();
+		jc.add("package com.pany;");
+		jc.addImportsPlaceholder();
+		jc.add("public class MyClass {");
+		// We do expect qualified references to java.lang.Throwable there is an
+		// import of another class with the same simple name
+		jc.add(jc.getClassName("third.party.Throwable") + " myField1;");
+		jc.add(jc.getClassName("java.lang.Throwable") + " myField2;");
+		jc.add("}");
+		
+		String result = getCleanResult(jc);
+		assertEquals(result, 
+			"package com.pany;" +
+			"import third.party.Throwable;" +
+			"public class MyClass {" +
+			"Throwable myField1;" +
+			"java.lang.Throwable myField2;" +
+			"}"
+		);
+	}
+
+	@Test
 	public void testMultipleImports() {
 		JavaComposite jc = new JavaComposite();
 		jc.add("package com.pany;");
