@@ -179,7 +179,7 @@ public class JavaCompositeTest {
 		jc.add("(");
 		jc.add(") {");
 		jc.add("}");
-		assertEquals("Wron code.", "public MyClass() {\n}\n", jc.toString());
+		assertEquals("Wrong code.", "public MyClass() {\n}\n", jc.toString());
 	}
 
 	private void assertComposition(String expectedResult, String... components) {
