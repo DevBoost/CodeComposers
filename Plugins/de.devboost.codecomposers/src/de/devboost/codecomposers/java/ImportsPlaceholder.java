@@ -15,7 +15,10 @@
  ******************************************************************************/
 package de.devboost.codecomposers.java;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import de.devboost.codecomposers.StringComponent;
@@ -23,6 +26,7 @@ import de.devboost.codecomposers.StringComponent;
 public class ImportsPlaceholder extends StringComponent {
 	
 	private Map<String, String> qualifiedImports = new LinkedHashMap<String, String>();
+	private Map<String, String> implicitImports = new LinkedHashMap<String, String>();
 	private String lineBreak;
 
 	public ImportsPlaceholder(String lineBreak) {
@@ -31,7 +35,17 @@ public class ImportsPlaceholder extends StringComponent {
 	}
 
 	public String getClassName(String qualifiedClassName) {
-		if (qualifiedImports.values().contains(qualifiedClassName)) {
+		if (isPrimitiveType(qualifiedClassName)) {
+			return qualifiedClassName;
+		}
+		
+		if (isGeneric(qualifiedClassName)) {
+			List<String> types = getTypeArguments(qualifiedClassName);
+			return getClassName(types.get(0)) + "<" + getClassName(types.get(1)) + ">";
+		}
+		
+		if (qualifiedImports.values().contains(qualifiedClassName) ||
+			implicitImports.values().contains(qualifiedClassName)) {
 			String simpleName = getSimpleName(qualifiedClassName);
 			return simpleName;
 		} else {
@@ -45,9 +59,43 @@ public class ImportsPlaceholder extends StringComponent {
 		}
 	}
 
+	private List<String> getTypeArguments(String qualifiedClassName) {
+		// TODO This is a very simplistic way to get the type arguments which
+		// will neither work for multiple nor nested arguments.
+		int begin = qualifiedClassName.indexOf("<");
+		int end = qualifiedClassName.indexOf(">");
+		String type = qualifiedClassName.substring(0, begin);
+		String typeArgument = qualifiedClassName.substring(begin + 1, end);
+		
+		List<String> types = new ArrayList<String>(2);
+		types.add(type);
+		types.add(typeArgument);
+		return types;
+	}
+
+	private boolean isGeneric(String qualifiedClassName) {
+		return qualifiedClassName.contains("<");
+	}
+
+	private boolean isPrimitiveType(String qualifiedClassName) {
+		
+		// Remove array qualifiers
+		qualifiedClassName = qualifiedClassName.replace("[", "");
+		qualifiedClassName = qualifiedClassName.replace("]", "");
+		
+		Class<?>[] primitiveTypes = new Class<?>[] {boolean.class, int.class, char.class, byte.class, long.class, double.class, float.class};
+		for (Class<?> primitiveType : primitiveTypes) {
+			if (primitiveType.getName().equals(qualifiedClassName)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	private boolean isNameImported(String qualifiedClassName) {
 		String simpleName = getSimpleName(qualifiedClassName);
-		return qualifiedImports.keySet().contains(simpleName);
+		return qualifiedImports.keySet().contains(simpleName) ||
+				implicitImports.keySet().contains(simpleName);
 	}
 
 	private String getSimpleName(String qualifiedClassName) {
@@ -56,7 +104,7 @@ public class ImportsPlaceholder extends StringComponent {
 	
 	@Override
 	public String getText() {
-		StringBuilder text = new StringBuilder();
+		List<String> imports = new ArrayList<String>();
 		for (String qualifiedImport : qualifiedImports.values()) {
 			if (qualifiedImport == null) {
 				continue;
@@ -65,15 +113,23 @@ public class ImportsPlaceholder extends StringComponent {
 			if (qualifiedImport.startsWith("java.lang.")) {
 				continue;
 			}
+			imports.add(qualifiedImport);
+		}
+		
+		Collections.sort(imports);
+		
+		StringBuilder text = new StringBuilder();
+		for (String importToAdd : imports) {
 			text.append("import ");
-			text.append(qualifiedImport);
+			text.append(importToAdd);
 			text.append(";");
 			text.append(lineBreak);
 		}
 		return text.toString();
 	}
 
-	public void addImplicitImport(String simpleClassName) {
-		qualifiedImports.put(simpleClassName, null);
+	public void addImplicitImport(String qualifiedClassName) {
+		String simpleName = getSimpleName(qualifiedClassName);
+		implicitImports.put(simpleName, qualifiedClassName);
 	}
 }

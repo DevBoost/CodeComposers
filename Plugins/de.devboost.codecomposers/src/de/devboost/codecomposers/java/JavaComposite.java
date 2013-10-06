@@ -66,7 +66,12 @@ public class JavaComposite extends StringComposite {
 			"/**".equals(componentText) ||     // start of Javadoc comment
 			componentText.startsWith(" * ") || // intermediate line
 			" */".equals(componentText);       // end of multi-line comment
-		return isMultiLineComment;
+		if (isMultiLineComment) {
+			return true;
+		}
+		
+		boolean isAnnotation = componentText.startsWith("@");
+		return isAnnotation;
 	}
 
 	public void addComment(String... paragraphs) {
@@ -83,12 +88,20 @@ public class JavaComposite extends StringComposite {
 	}
 	
 	public void addJavadoc(String... paragraphs) {
+		addDocInternal("/**", paragraphs);
+	}
+
+	public void addDoc(String... paragraphs) {
+		addDocInternal("/*", paragraphs);
+	}
+
+	private void addDocInternal(String prefix, String... paragraphs) {
 		// skip empty documentation
 		if (paragraphs == null || paragraphs.length == 0) {
 			return;
 		}
 		
-		add("/**");
+		add(prefix);
 		boolean wasParameterParagraph = false;
 		for (String paragraph : paragraphs) {
 			boolean addEmptyLine = false;

@@ -70,7 +70,7 @@ public class ImportsTest {
 		jc.add("package com.pany;");
 		jc.addImportsPlaceholder();
 		jc.add("public class MyClass {");
-		jc.addImplicitImport("MyClass");
+		jc.addImplicitImport("com.pany.MyClass");
 		jc.add(jc.getClassName("third.party.MyClass") + " myField1;");
 		jc.add("}");
 		
@@ -79,6 +79,25 @@ public class ImportsTest {
 			"package com.pany;" +
 			"public class MyClass {" +
 			"third.party.MyClass myField1;" +
+			"}"
+		);
+	}
+
+	@Test
+	public void testImplicitImport2() {
+		JavaComposite jc = new JavaComposite();
+		jc.add("package com.pany;");
+		jc.addImportsPlaceholder();
+		jc.add("public class MyClass {");
+		jc.addImplicitImport("com.pany.MyClassInSamePackage");
+		jc.add(jc.getClassName("com.pany.MyClassInSamePackage") + " myField;");
+		jc.add("}");
+		
+		String result = getCleanResult(jc);
+		assertEquals(result, 
+			"package com.pany;" +
+			"public class MyClass {" +
+			"MyClassInSamePackage myField;" +
 			"}"
 		);
 	}
@@ -144,6 +163,62 @@ public class ImportsTest {
 		
 		String import1 = "import third.party.OtherClass1;";
 		String import2 = "import third.party.OtherClass2;";
+		assertTrue("Line break between imports expected.", result.contains(import1 + "\n" + import2));
+	}
+
+	@Test
+	public void testIgnorePrimitiveType() {
+		JavaComposite jc = new JavaComposite();
+		jc.add("package com.pany;");
+		jc.addImportsPlaceholder();
+		jc.add("public class MyClass {");
+		jc.add(jc.getClassName("int") +  " myField1;");
+		jc.add(jc.getClassName("byte") +  " myField2;");
+		jc.add(jc.getClassName("char") +  " myField3;");
+		jc.add(jc.getClassName("boolean") +  " myField4;");
+		jc.add(jc.getClassName("long") +  " myField5;");
+		jc.add(jc.getClassName("double") +  " myField6;");
+		jc.add(jc.getClassName("float") +  " myField7;");
+		// Add some primitive arrays
+		jc.add(jc.getClassName("int[]") +  " myField8;");
+		jc.add("}");
+		
+		String result = getCleanResult(jc);
+		assertEquals(result, 
+			"package com.pany;" +
+			"public class MyClass {" +
+			"int myField1;" +
+			"byte myField2;" +
+			"char myField3;" +
+			"boolean myField4;" +
+			"long myField5;" +
+			"double myField6;" +
+			"float myField7;" +
+			"int[] myField8;" +
+			"}"
+		);
+	}
+
+	@Test
+	public void testGenericImports() {
+		JavaComposite jc = new JavaComposite();
+		jc.add("package com.pany;");
+		jc.addImportsPlaceholder();
+		jc.add("public class MyClass {");
+		jc.add(jc.getClassName("java.util.List<third.party.OtherClass>") + " myField;");
+		jc.add("}");
+		
+		String result = getCleanResult(jc, false);
+		print(result);
+		
+		String import1 = "import java.util.List;";
+		String import2 = "import third.party.OtherClass;";
+		assertTrue("Import of List expected.", result.contains(import1));
+		assertTrue("Import of OtherClass expected.", result.contains(import2));
+		
+		String fieldDeclaration = "List<OtherClass> myField;";
+		assertTrue("Wrong field declaration.", result.contains(fieldDeclaration));
+		
 		assertTrue("Line break between imports expected.", result.contains(import1 + "\n" + import2));
 	}
 
