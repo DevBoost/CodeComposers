@@ -17,8 +17,10 @@ package de.devboost.codecomposers.java;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import de.devboost.codecomposers.Component;
 import de.devboost.codecomposers.StringComposite;
@@ -329,5 +331,25 @@ public class JavaComposite extends StringComposite {
 			throw new IllegalArgumentException("No placeholder for imports found.");
 		}
 		this.importsPlaceholder.addImplicitImport(simpleClassName);
+	}
+	
+	public String STRING() {
+		return getClassName(String.class);
+	}
+	
+	public String SET() {
+		return getClassName(Set.class);
+	}
+	
+	public String LIST() {
+		return getClassName(List.class);
+	}
+	
+	public String ARRAY_LIST() {
+		return getClassName(ArrayList.class);
+	}
+	
+	public String LINKED_HASH_SET() {
+		return getClassName(LinkedHashSet.class);
 	}
 }

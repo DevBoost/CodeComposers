@@ -142,6 +142,10 @@ public class StringComposite {
 		return this;
 	}
 
+	public StringComposite add(StringBuilder text) {
+		return add(text.toString());
+	}
+
 	public StringComposite add(StringComponent component) {
 		components.add(component);
 		return this;
