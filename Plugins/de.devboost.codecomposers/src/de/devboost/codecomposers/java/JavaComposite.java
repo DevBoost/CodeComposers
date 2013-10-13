@@ -357,7 +357,7 @@ public class JavaComposite extends StringComposite {
 	@Override
 	public StringComposite add(String text) {
 		StringComposite result = super.add(text);
-		if (interfaceMode && text.endsWith(";")) {
+		if (interfaceMode && text.endsWith(";") && !text.startsWith("package ")) {
 			result = result.addLineBreak();
 		}
 		return result;

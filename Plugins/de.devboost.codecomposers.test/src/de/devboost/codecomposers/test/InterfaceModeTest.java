@@ -25,4 +25,18 @@ public class InterfaceModeTest {
 
 		assertTrue("Two breaks expected after m1().", jc.toString().contains("m1();\n\t\n\tpublic"));
 	}
+
+	@Test
+	public void testInterfaceModeWithPackage() {
+		JavaComposite jc = new JavaComposite();
+		jc.setInterfaceMode(true);
+		
+		jc.add("package com.acme;");
+		jc.add("public interface ITest {");
+		jc.add("public void m1();");
+		jc.add("public void m2();");
+		jc.add("}");
+
+		assertTrue("One break expected after package declaraction.", jc.toString().contains("com.acme;\npublic"));
+	}
 }
