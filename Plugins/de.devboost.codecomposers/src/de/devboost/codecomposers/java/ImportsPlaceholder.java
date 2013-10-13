@@ -110,7 +110,8 @@ public class ImportsPlaceholder extends StringComponent {
 				continue;
 			}
 			// Do not import classes that are imported by default
-			if (qualifiedImport.startsWith("java.lang.")) {
+			String prefix = "java.lang.";
+			if (qualifiedImport.startsWith(prefix) && qualifiedImport.substring(prefix.length() + 1).indexOf(".") < 0) {
 				continue;
 			}
 			imports.add(qualifiedImport);

@@ -18,6 +18,8 @@ package de.devboost.codecomposers.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.lang.reflect.Field;
+
 import org.junit.Test;
 
 import de.devboost.codecomposers.java.JavaComposite;
@@ -143,6 +145,27 @@ public class ImportsTest {
 			"public class MyClass {" +
 			"Throwable myField1;" +
 			"java.lang.Throwable myField2;" +
+			"}"
+		);
+	}
+
+	@Test
+	public void testImportFromSubPackageOfJavaLang() {
+		JavaComposite jc = new JavaComposite();
+		jc.add("package com.pany;");
+		jc.addImportsPlaceholder();
+		jc.add("public class MyClass {");
+		// We do expect qualified references to java.lang.Throwable there is an
+		// import of another class with the same simple name
+		jc.add(jc.getClassName(Field.class) + " myField;");
+		jc.add("}");
+		
+		String result = getCleanResult(jc);
+		assertEquals(result, 
+			"package com.pany;" +
+			"import java.lang.reflect.Field;" +
+			"public class MyClass {" +
+			"Field myField;" +
 			"}"
 		);
 	}
