@@ -16,6 +16,7 @@
 package de.devboost.codecomposers.java;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -360,6 +361,10 @@ public class JavaComposite extends StringComposite {
 	
 	public String LIST() {
 		return getClassName(List.class);
+	}
+	
+	public String COLLECTION() {
+		return getClassName(Collection.class);
 	}
 	
 	public String ARRAY_LIST() {
