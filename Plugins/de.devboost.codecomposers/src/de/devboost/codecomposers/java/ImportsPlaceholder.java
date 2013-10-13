@@ -41,7 +41,26 @@ public class ImportsPlaceholder extends StringComponent {
 		
 		if (isGeneric(qualifiedClassName)) {
 			List<String> types = getTypeArguments(qualifiedClassName);
-			return getClassName(types.get(0)) + "<" + getClassName(types.get(1)) + ">";
+			String typeParameters = types.get(1);
+			String[] typeParameterArray = typeParameters.split(",");
+			StringBuilder result = new StringBuilder();
+			result.append(getClassName(types.get(0)));
+			result.append("<");
+			for (int i = 0; i < typeParameterArray.length; i++) {
+				String typeParameter = typeParameterArray[i];				
+				if ("?".equals(typeParameter.trim())) {
+					result.append(typeParameter);
+				} else {
+					result.append(getClassName(typeParameter));
+				}
+				
+				boolean isNotLast = i < typeParameterArray.length - 1;
+				if (isNotLast) {
+					result.append(",");
+				}
+			}
+			result.append(">");
+			return result.toString();
 		}
 		
 		if (qualifiedImports.values().contains(qualifiedClassName) ||

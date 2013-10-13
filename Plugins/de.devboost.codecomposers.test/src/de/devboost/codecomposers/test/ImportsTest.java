@@ -245,6 +245,26 @@ public class ImportsTest {
 		assertTrue("Line break between imports expected.", result.contains(import1 + "\n" + import2));
 	}
 
+	@Test
+	public void testGenericImportOfMap() {
+		assertGenericTypeImport("Map<?,?>");
+		assertGenericTypeImport("Map<?, ?>");
+		assertGenericTypeImport("Map<? , ?>");
+		assertGenericTypeImport("Map< ? , ? >");
+	}
+
+	private void assertGenericTypeImport(String type) {
+		JavaComposite jc = new JavaComposite();
+		jc.add("package com.pany;");
+		jc.addImportsPlaceholder();
+		jc.add("public class MyClass {");
+		jc.add(jc.getClassName("java.util." + type) + " map;");
+		jc.add("}");
+
+		String result = getCleanResult(jc, true);
+		assertEquals("Wrong result", "package com.pany;import java.util.Map;public class MyClass {" + type + " map;}", result);
+	}
+
 	private String getCleanResult(JavaComposite jc) {
 		return getCleanResult(jc, true);
 	}
