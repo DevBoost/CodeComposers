@@ -27,31 +27,31 @@ import java.util.Set;
  */
 public class ClassNameConstants {
 
-	public String ARRAY_LIST(JavaComposite jc) {
+	public static String ARRAY_LIST(JavaComposite jc) {
 		return jc.getClassName(ArrayList.class.getName());
 	}
 
-	public String LINKED_HASH_MAP(JavaComposite jc) {
+	public static String LINKED_HASH_MAP(JavaComposite jc) {
 		return jc.getClassName(LinkedHashMap.class.getName());
 	}
 
-	public String LINKED_HASH_SET(JavaComposite jc) {
+	public static String LINKED_HASH_SET(JavaComposite jc) {
 		return jc.getClassName(LinkedHashSet.class.getName());
 	}
 
-	public String LIST(JavaComposite jc) {
+	public static String LIST(JavaComposite jc) {
 		return jc.getClassName(List.class.getName());
 	}
 
-	public String MAP(JavaComposite jc) {
+	public static String MAP(JavaComposite jc) {
 		return jc.getClassName(Map.class.getName());
 	}
 
-	public String MAP_ENTRY(JavaComposite jc) {
+	public static String MAP_ENTRY(JavaComposite jc) {
 		return jc.getClassName(Map.Entry.class.getCanonicalName());
 	}
 
-	public String SET(JavaComposite jc) {
+	public static String SET(JavaComposite jc) {
 		return jc.getClassName(Set.class.getName());
 	}
 }
