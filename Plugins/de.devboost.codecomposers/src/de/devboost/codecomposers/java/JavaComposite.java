@@ -39,6 +39,7 @@ public class JavaComposite extends StringComposite {
 	private Map<String, String[]> getterDocs = new LinkedHashMap<String, String[]>();
 	private Map<String, String> setters = new LinkedHashMap<String, String>();
 	private ImportsPlaceholder importsPlaceholder;
+	private boolean interfaceMode;
 
 	public JavaComposite() {
 		super(true);
@@ -351,5 +352,22 @@ public class JavaComposite extends StringComposite {
 	
 	public String LINKED_HASH_SET() {
 		return getClassName(LinkedHashSet.class);
+	}
+	
+	@Override
+	public StringComposite add(String text) {
+		StringComposite result = super.add(text);
+		if (interfaceMode && text.endsWith(";")) {
+			result = result.addLineBreak();
+		}
+		return result;
+	}
+
+	/**
+	 * Set the interface mode (i.e., whether to insert two line breaks after 
+	 * line that end with a semicolon).
+	 */
+	public void setInterfaceMode(boolean interfaceMode) {
+		this.interfaceMode = interfaceMode;
 	}
 }
