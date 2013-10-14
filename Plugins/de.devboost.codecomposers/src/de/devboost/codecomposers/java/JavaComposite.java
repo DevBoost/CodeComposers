@@ -61,12 +61,14 @@ public class JavaComposite extends StringComposite {
 		if (superResult) {
 			return true;
 		}
+		
 		// add line breaks after single line comments
 		String componentText = component.toString();
 		boolean isSingleLineComment = componentText.contains("//");
 		if (isSingleLineComment) {
 			return true;
 		}
+		
 		boolean isMultiLineComment = 
 			"/*".equals(componentText) ||      // start of multi-line comment
 			"/**".equals(componentText) ||     // start of Javadoc comment
@@ -201,10 +203,31 @@ public class JavaComposite extends StringComposite {
 		addFieldGetSet(fieldName, type, (String[]) null);
 	}
 
-	public void addFieldGetSet(String fieldName, String type, String... javadoc) {
-		addFieldGetSet(fieldName, type, javadoc, null);
+	/**
+	 * Adds a field with the given name and type and the respective get and set
+	 * methods.
+	 * 
+	 * @param fieldName the name of the field to add
+	 * @param type the type of the field
+	 * @param fieldDoc the documentation for the field
+	 */
+	public void addFieldGetSet(String fieldName, String type, String... fieldDoc) {
+		addFieldGetSet(fieldName, type, fieldDoc, null);
 	}
 
+	/**
+	 * Adds a field with the given name and type and the respective get and set
+	 * methods.
+	 * 
+	 * @param fieldName
+	 *            the name of the field to add
+	 * @param type
+	 *            the type of the field
+	 * @param fieldDoc
+	 *            the documentation for the field
+	 * @param getterDoc
+	 *            the documentation for the get method
+	 */
 	public void addFieldGetSet(String fieldName, String type, String[] fieldDoc, String[] getterDoc) {
 		addFieldGet(fieldName, type, fieldDoc, getterDoc);
 		setters.put(fieldName, type);
@@ -212,16 +235,32 @@ public class JavaComposite extends StringComposite {
 
 	/**
 	 * Adds a field with the given name and type and the respective get method.
+	 * No set method is added.
 	 * 
 	 * @param fieldName
 	 *            the name of the field to add
 	 * @param type
 	 *            the type of the field
+	 * @param fieldDoc
+	 *            the documentation for the field
 	 */
-	public void addFieldGet(String fieldName, String type, String... javadoc) {
-		addFieldGet(fieldName, type, javadoc, null);
+	public void addFieldGet(String fieldName, String type, String... fieldDoc) {
+		addFieldGet(fieldName, type, fieldDoc, null);
 	}
 	
+	/**
+	 * Adds a field with the given name and type and the respective get method.
+	 * No set method is added.
+	 * 
+	 * @param fieldName
+	 *            the name of the field to add
+	 * @param type
+	 *            the type of the field
+	 * @param fieldDoc
+	 *            the documentation for the field
+	 * @param getterDoc
+	 *            the documentation for the get method
+	 */
 	public void addFieldGet(String fieldName, String type, String[] fieldDoc, String[] getterDoc) {
 		fields.put(fieldName, type);
 		fieldDocs.put(fieldName, fieldDoc);
@@ -229,11 +268,19 @@ public class JavaComposite extends StringComposite {
 		getterDocs.put(fieldName, getterDoc);
 	}
 	
+	/**
+	 * Insert all get and set methods for fields that were created by previous
+	 * calls to {@link #addFieldGet()} or {@link #addFieldGetSet()}.
+	 */
 	public void addGettersSetters() {
 		addGetters();
 		addSetters();
 	}
 
+	/**
+	 * Insert all set methods for fields that were created by previous calls to
+	 * {@link #addFieldGet()} or {@link #addFieldGetSet()}.
+	 */
 	private void addSetters() {
 		for (String fieldName : setters.keySet()) {
 			String type = setters.get(fieldName);
@@ -244,6 +291,10 @@ public class JavaComposite extends StringComposite {
 		}
 	}
 
+	/**
+	 * Insert all get methods for fields that were created by previous calls to
+	 * {@link #addFieldGet()} or {@link #addFieldGetSet()}.
+	 */
 	private void addGetters() {
 		for (String fieldName : getters.keySet()) {
 			String type = getters.get(fieldName);
@@ -260,6 +311,10 @@ public class JavaComposite extends StringComposite {
 		}
 	}
 
+	/**
+	 * Insert all fields that were created by previous calls to
+	 * {@link #addFieldGet()} or {@link #addFieldGetSet()}.
+	 */
 	public void addFields() {
 		for (String fieldName : fields.keySet()) {
 			String type = fields.get(fieldName);
@@ -325,10 +380,28 @@ public class JavaComposite extends StringComposite {
 		add(this.importsPlaceholder);
 	}
 	
+	/**
+	 * Returns the simple name for the given class and adds an import (if
+	 * required). If a class with the same simple name, but a different
+	 * qualified name is already imported, the qualified class name is returned.
+	 * 
+	 * @param clazz the class the determine the name for
+	 * @return either a simple or qualified name
+	 */
 	public String getClassName(Class<?> clazz) {
 		return getClassName(clazz.getName());
 	}
 
+	/**
+	 * Returns the simple name for the given qualified class name and adds an
+	 * import (if required). If a class with the same simple name, but a
+	 * different qualified name is already imported, the qualified class name is
+	 * returned as it is.
+	 * 
+	 * @param clazz
+	 *            the class the determine the name for
+	 * @return either a simple or qualified name
+	 */
 	public String getClassName(String qualifiedClassName) {
 		if (this.importsPlaceholder == null) {
 			throw new IllegalArgumentException("No placeholder for imports found.");
@@ -336,6 +409,11 @@ public class JavaComposite extends StringComposite {
 		return this.importsPlaceholder.getClassName(qualifiedClassName);
 	}
 
+	/**
+	 * Adds the simple name of a class that is implicitly imported (e.g.,
+	 * because it resides in the same package as the class that is currently
+	 * generated).
+	 */
 	public void addImplicitImport(String simpleClassName) {
 		if (this.importsPlaceholder == null) {
 			throw new IllegalArgumentException("No placeholder for imports found.");
