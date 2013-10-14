@@ -30,7 +30,9 @@ import de.devboost.codecomposers.util.StringUtil;
 
 /**
  * A custom StringComposite that is configured with the Java-specific line break
- * characters and indentation starter and stoppers.
+ * characters and indentation starter and stoppers. It is also capable of adding
+ * required imports automatically (if class names are acquired using 
+ * {@link #getClassName(Class)} or {@link #getClassName(String)}.
  */
 public class JavaComposite extends StringComposite {
 
@@ -143,12 +145,14 @@ public class JavaComposite extends StringComposite {
 	}
 	
 	/**
-	 * Splits the given text into lines where each line does
-	 * contain at most 'maxLength' characters. The text is split
-	 * at space characters (i.e., words are not split).
+	 * Splits the given text into lines where each line does contain at most
+	 * 'maxLength' characters. The text is split at space characters (i.e.,
+	 * words are not split).
 	 * 
-	 * @param text the string to split
-	 * @param maxLength the maximum length of the lines returned
+	 * @param text
+	 *            the string to split
+	 * @param maxLength
+	 *            the maximum length of the lines returned
 	 * @return
 	 */
 	public List<String> split(String text, int maxLength) {
@@ -207,11 +211,12 @@ public class JavaComposite extends StringComposite {
 	}
 
 	/**
-	 * Adds a field with the given name and type and the respective get 
-	 * method.
+	 * Adds a field with the given name and type and the respective get method.
 	 * 
-	 * @param fieldName the name of the field to add
-	 * @param type the type of the field
+	 * @param fieldName
+	 *            the name of the field to add
+	 * @param type
+	 *            the type of the field
 	 */
 	public void addFieldGet(String fieldName, String type, String... javadoc) {
 		addFieldGet(fieldName, type, javadoc, null);
@@ -266,15 +271,18 @@ public class JavaComposite extends StringComposite {
 	}
 	
 	/**
-	 * Creates a set of methods that contain the given statements. Each 
+	 * Creates a set of methods that contain the given statements. Each
 	 * statement is represented by its content (the code) and the number of
-	 * bytes that this code requires. The method is automatically split if
-	 * the code exceeds the 64k limit.
+	 * bytes that this code requires. The method is automatically split if the
+	 * code exceeds the 64k limit.
 	 * 
-	 * @param name a prefix for the method names
-	 * @param statements the statements to add to the method body
+	 * @param name
+	 *            a prefix for the method names
+	 * @param statements
+	 *            the statements to add to the method body
 	 */
 	public void addLargeMethod(String name, List<Pair<String, Integer>> statements) {
+		
 		int bytesUsedInCurrentMethod = 0;
 		boolean methodIsFull = true;
 		int i = 0;
@@ -394,7 +402,7 @@ public class JavaComposite extends StringComposite {
 
 	/**
 	 * Set the interface mode (i.e., whether to insert two line breaks after 
-	 * line that end with a semicolon).
+	 * lines that end with a semicolon).
 	 */
 	public void setInterfaceMode(boolean interfaceMode) {
 		this.interfaceMode = interfaceMode;
