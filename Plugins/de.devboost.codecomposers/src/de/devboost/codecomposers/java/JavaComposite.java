@@ -359,6 +359,14 @@ public class JavaComposite extends StringComposite {
 		return getClassName(Set.class);
 	}
 	
+	public String MAP() {
+		return getClassName(Map.class);
+	}
+	
+	public String LINKED_HASH_MAP() {
+		return getClassName(LinkedHashMap.class);
+	}
+	
 	public String LIST() {
 		return getClassName(List.class);
 	}
