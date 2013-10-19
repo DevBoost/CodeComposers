@@ -399,7 +399,7 @@ public class JavaComposite extends StringComposite {
 	 * returned as it is.
 	 * 
 	 * @param clazz
-	 *            the class the determine the name for
+	 *            the class to determine the name for
 	 * @return either a simple or qualified name
 	 */
 	public String getClassName(String qualifiedClassName) {
@@ -409,6 +409,20 @@ public class JavaComposite extends StringComposite {
 		return this.importsPlaceholder.getClassName(qualifiedClassName);
 	}
 
+	/**
+	 * Returns the simple name for the given qualified member and adds a static
+	 * import (if required). If a class or member with the same simple name, but
+	 * a different qualified name is already imported, the qualified member name 
+	 * is returned as it is.
+	 * 
+	 * @param qualifiedMemberName
+	 *            the member to determine the name for
+	 * @return either a simple or qualified name
+	 */
+	public String getStaticMemberName(String qualifiedMemberName) {
+		return this.importsPlaceholder.getStaticMemberName(qualifiedMemberName);
+	}
+	
 	/**
 	 * Adds the simple name of a class that is implicitly imported (e.g.,
 	 * because it resides in the same package as the class that is currently

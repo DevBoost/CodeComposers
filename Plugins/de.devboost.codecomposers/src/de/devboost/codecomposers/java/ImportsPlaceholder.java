@@ -17,16 +17,17 @@ package de.devboost.codecomposers.java;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 import de.devboost.codecomposers.StringComponent;
 
 public class ImportsPlaceholder extends StringComponent {
 	
-	private Map<String, String> qualifiedImports = new LinkedHashMap<String, String>();
-	private Map<String, String> implicitImports = new LinkedHashMap<String, String>();
+	private Set<Import> qualifiedImports = new LinkedHashSet<Import>();
+	private Set<Import> implicitImports = new LinkedHashSet<Import>();
+	
 	private String lineBreak;
 
 	public ImportsPlaceholder(String lineBreak) {
@@ -63,19 +64,49 @@ public class ImportsPlaceholder extends StringComponent {
 			return result.toString();
 		}
 		
-		if (qualifiedImports.values().contains(qualifiedClassName) ||
-			implicitImports.values().contains(qualifiedClassName)) {
-			String simpleName = getSimpleName(qualifiedClassName);
+		return getName(qualifiedClassName, false);
+	}
+
+	public String getStaticMemberName(String qualifiedMemberName) {
+		return getName(qualifiedMemberName, true);
+	}
+
+	private String getName(String qualifiedName, boolean isStatic) {
+		if (contains(qualifiedImports, qualifiedName) ||
+			contains(implicitImports, qualifiedName)) {
+			String simpleName = getSimpleName(qualifiedName);
 			return simpleName;
 		} else {
-			if (isNameImported(qualifiedClassName)) {
-				return qualifiedClassName;
+			if (isNameImported(qualifiedName)) {
+				return qualifiedName;
 			} else {
-				String simpleName = getSimpleName(qualifiedClassName);
-				qualifiedImports.put(simpleName, qualifiedClassName);
+				String simpleName = getSimpleName(qualifiedName);
+				qualifiedImports.add(new Import(simpleName, qualifiedName, isStatic));
 				return simpleName;
 			}
 		}
+	}
+
+	private boolean contains(Set<Import> importSet,
+			String qualifiedClassName) {
+		
+		for (Import nextImport : importSet) {
+			if (qualifiedClassName.equals(nextImport.getQualifiedName())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean containsSimpleName(Set<Import> importSet,
+			String simpleName) {
+		
+		for (Import nextImport : importSet) {
+			if (simpleName.equals(nextImport.getSimpleName())) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private List<String> getTypeArguments(String qualifiedClassName) {
@@ -113,8 +144,8 @@ public class ImportsPlaceholder extends StringComponent {
 
 	private boolean isNameImported(String qualifiedClassName) {
 		String simpleName = getSimpleName(qualifiedClassName);
-		return qualifiedImports.keySet().contains(simpleName) ||
-				implicitImports.keySet().contains(simpleName);
+		return containsSimpleName(qualifiedImports, simpleName) ||
+				containsSimpleName(implicitImports, simpleName);
 	}
 
 	private String getSimpleName(String qualifiedClassName) {
@@ -124,16 +155,18 @@ public class ImportsPlaceholder extends StringComponent {
 	@Override
 	public String getText() {
 		List<String> imports = new ArrayList<String>();
-		for (String qualifiedImport : qualifiedImports.values()) {
+		for (Import qualifiedImport : qualifiedImports) {
 			if (qualifiedImport == null) {
 				continue;
 			}
 			// Do not import classes that are imported by default
 			String prefix = "java.lang.";
-			if (qualifiedImport.startsWith(prefix) && qualifiedImport.substring(prefix.length() + 1).indexOf(".") < 0) {
+			String qualifiedName = qualifiedImport.getQualifiedName();
+			if (qualifiedName.startsWith(prefix) && qualifiedName.substring(prefix.length() + 1).indexOf(".") < 0) {
 				continue;
 			}
-			imports.add(qualifiedImport);
+			boolean isStatic = qualifiedImport.isStatic();
+			imports.add((isStatic ? "static " : "") + qualifiedName);
 		}
 		
 		Collections.sort(imports);
@@ -150,6 +183,6 @@ public class ImportsPlaceholder extends StringComponent {
 
 	public void addImplicitImport(String qualifiedClassName) {
 		String simpleName = getSimpleName(qualifiedClassName);
-		implicitImports.put(simpleName, qualifiedClassName);
+		implicitImports.add(new Import(simpleName, qualifiedClassName, false));
 	}
 }

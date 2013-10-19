@@ -265,6 +265,30 @@ public class ImportsTest {
 		assertEquals("Wrong result", "package com.pany;import java.util.Map;public class MyClass {" + type + " map;}", result);
 	}
 
+	@Test
+	public void testStaticImport() {
+		JavaComposite jc = new JavaComposite();
+		jc.add("package com.pany;");
+		jc.addImportsPlaceholder();
+		jc.add("public class MyClass {");
+		jc.add("public void m() {");
+		jc.add(jc.getStaticMemberName("org.junit.Assert.assertNull") +  "(null);");
+		jc.add("}");
+		jc.add("}");
+		
+		String result = getCleanResult(jc);
+		assertEquals( 
+			"package com.pany;" +
+			"import static org.junit.Assert.assertNull;" +
+			"public class MyClass {" +
+			"public void m() {" +
+			"assertNull(null);" +
+			"}" +
+			"}",
+			result
+		);
+	}
+
 	private String getCleanResult(JavaComposite jc) {
 		return getCleanResult(jc, true);
 	}
