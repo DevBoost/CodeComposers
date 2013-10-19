@@ -132,8 +132,8 @@ public class ImportsTest {
 		jc.add("package com.pany;");
 		jc.addImportsPlaceholder();
 		jc.add("public class MyClass {");
-		// We do expect qualified references to java.lang.Throwable there is an
-		// import of another class with the same simple name
+		// We do expect qualified references to third.party.Throwable because
+		// there is another class with the same simple name in java.lang
 		jc.add(jc.getClassName("third.party.Throwable") + " myField1;");
 		jc.add(jc.getClassName("java.lang.Throwable") + " myField2;");
 		jc.add("}");
@@ -141,10 +141,29 @@ public class ImportsTest {
 		String result = getCleanResult(jc);
 		assertEquals(result, 
 			"package com.pany;" +
-			"import third.party.Throwable;" +
 			"public class MyClass {" +
-			"Throwable myField1;" +
-			"java.lang.Throwable myField2;" +
+			"third.party.Throwable myField1;" +
+			"Throwable myField2;" +
+			"}"
+		);
+	}
+
+	@Test
+	public void testOverlappingImplicitWithJavaLangPackage() {
+		JavaComposite jc = new JavaComposite();
+		jc.add("package com.pany;");
+		jc.addImportsPlaceholder();
+		jc.add("public class MyClass {");
+		// We do expect qualified references to java.lang.Throwable there is an
+		// import of another class with the same simple name
+		jc.add(jc.getClassName("third.party.Throwable") + " myField1;");
+		jc.add("}");
+		
+		String result = getCleanResult(jc);
+		assertEquals(result, 
+			"package com.pany;" +
+			"public class MyClass {" +
+			"third.party.Throwable myField1;" +
 			"}"
 		);
 	}

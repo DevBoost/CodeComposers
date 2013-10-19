@@ -33,6 +33,10 @@ public class ImportsPlaceholder extends StringComponent {
 	public ImportsPlaceholder(String lineBreak) {
 		super(null, null);
 		this.lineBreak = lineBreak;
+		
+		for (Class<?> nextClass : JavaLangClasses.CLASSES_IN_JAVA_LANG_PACKAGE) {
+			addImplicitImport(nextClass.getName());
+		}
 	}
 
 	public String getClassName(String qualifiedClassName) {
