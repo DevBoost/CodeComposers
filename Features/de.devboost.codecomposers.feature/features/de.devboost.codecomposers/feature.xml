@@ -1,15 +1,20 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<feature 
-	id="de.devboost.codecomposers" 
-	label="Code Composers"
-	provider-name="DevBoost GmbH"
-	version="1.0.0">
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="de.devboost.codecomposers"
+      label="Code Composers"
+      version="1.0.1"
+      provider-name="DevBoost GmbH">
 
-   <description url="http://www.emftext.org">Code Composers is a library to generate code for different languages.</description>
+   <description url="http://www.emftext.org">
+      Code Composers is a library to generate code for different languages.
+   </description>
 
-   <copyright>Copyright (c) 2006-2013 Software Technology Group, Dresden University of Technology, Germany; DevBoost GmbH, Berlin, Amtsgericht Charlottenburg, HRB 140026.</copyright>
+   <copyright>
+      Copyright (c) 2006-2013 Software Technology Group, Dresden University of Technology, Germany; DevBoost GmbH, Berlin, Amtsgericht Charlottenburg, HRB 140026.
+   </copyright>
 
-   <license>Eclipse Public License v1.0
+   <license>
+      Eclipse Public License v1.0
 
 Copyright (c) 2006-2013
 Software Technology Group, Dresden University of Technology
@@ -21,8 +26,13 @@ Contributors:
   Software Technology Group - TU Dresden, Germany;
   DevBoost GmbH - Berlin, Germany
      - initial API and implementation
- </license>
-   
-	<plugin download-size="0" id="de.devboost.codecomposers" install-size="0" unpack="false" version="0.0.0"/>
+   </license>
+
+   <plugin
+         id="de.devboost.codecomposers"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
 
 </feature>
