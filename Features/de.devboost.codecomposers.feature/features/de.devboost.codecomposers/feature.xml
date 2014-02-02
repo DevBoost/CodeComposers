@@ -2,7 +2,7 @@
 <feature
       id="de.devboost.codecomposers"
       label="Code Composers"
-      version="1.0.1"
+      version="1.0.2"
       provider-name="DevBoost GmbH">
 
    <description url="http://www.emftext.org">
