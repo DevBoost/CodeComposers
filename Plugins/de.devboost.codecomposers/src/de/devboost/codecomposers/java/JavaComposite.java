@@ -389,7 +389,7 @@ public class JavaComposite extends StringComposite {
 	 * @return either a simple or qualified name
 	 */
 	public String getClassName(Class<?> clazz) {
-		return getClassName(clazz.getName());
+		return getClassName(clazz.getCanonicalName());
 	}
 
 	/**
