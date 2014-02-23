@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006-2013
+ * Copyright (c) 2006-2014
  * Software Technology Group, Dresden University of Technology
  * DevBoost GmbH, Berlin, Amtsgericht Charlottenburg, HRB 140026
  * 
@@ -91,9 +91,7 @@ public class ImportsPlaceholder extends StringComponent {
 		}
 	}
 
-	private boolean contains(Set<Import> importSet,
-			String qualifiedClassName) {
-		
+	private boolean contains(Set<Import> importSet, String qualifiedClassName) {
 		for (Import nextImport : importSet) {
 			if (qualifiedClassName.equals(nextImport.getQualifiedName())) {
 				return true;
@@ -102,9 +100,7 @@ public class ImportsPlaceholder extends StringComponent {
 		return false;
 	}
 
-	private boolean containsSimpleName(Set<Import> importSet,
-			String simpleName) {
-		
+	private boolean containsSimpleName(Set<Import> importSet, String simpleName) {
 		for (Import nextImport : importSet) {
 			if (simpleName.equals(nextImport.getSimpleName())) {
 				return true;
