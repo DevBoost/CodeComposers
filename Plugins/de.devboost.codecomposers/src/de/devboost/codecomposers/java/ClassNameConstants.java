@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006-2013
+ * Copyright (c) 2006-2014
  * Software Technology Group, Dresden University of Technology
  * DevBoost GmbH, Berlin, Amtsgericht Charlottenburg, HRB 140026
  * 
@@ -16,6 +16,7 @@
 package de.devboost.codecomposers.java;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -28,30 +29,43 @@ import java.util.Set;
 public class ClassNameConstants {
 
 	public static String ARRAY_LIST(JavaComposite jc) {
-		return jc.getClassName(ArrayList.class.getName());
+		return getClassName(jc, ArrayList.class.getName());
 	}
 
 	public static String LINKED_HASH_MAP(JavaComposite jc) {
-		return jc.getClassName(LinkedHashMap.class.getName());
+		return getClassName(jc, LinkedHashMap.class.getName());
 	}
 
 	public static String LINKED_HASH_SET(JavaComposite jc) {
-		return jc.getClassName(LinkedHashSet.class.getName());
+		return getClassName(jc, LinkedHashSet.class.getName());
 	}
 
 	public static String LIST(JavaComposite jc) {
-		return jc.getClassName(List.class.getName());
+		return getClassName(jc, List.class.getName());
+	}
+
+	public static String ITERATOR(JavaComposite jc) {
+		return getClassName(jc, Iterator.class.getName());
 	}
 
 	public static String MAP(JavaComposite jc) {
-		return jc.getClassName(Map.class.getName());
+		return getClassName(jc, Map.class.getName());
 	}
 
 	public static String MAP_ENTRY(JavaComposite jc) {
-		return jc.getClassName(Map.Entry.class.getCanonicalName());
+		return getClassName(jc, Map.Entry.class.getCanonicalName());
 	}
 
 	public static String SET(JavaComposite jc) {
-		return jc.getClassName(Set.class.getName());
+		return getClassName(jc, Set.class.getName());
+	}
+
+	public static String getClassName(JavaComposite jc,
+			String qualifiedClassName) {
+		
+		if (jc == null) {
+			return qualifiedClassName;
+		}
+		return jc.getClassName(qualifiedClassName);
 	}
 }
