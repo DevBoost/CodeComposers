@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006-2013
+ * Copyright (c) 2006-2014
  * Software Technology Group, Dresden University of Technology
  * DevBoost GmbH, Berlin, Amtsgericht Charlottenburg, HRB 140026
  * 
@@ -29,18 +29,20 @@ import de.devboost.codecomposers.util.Pair;
 import de.devboost.codecomposers.util.StringUtil;
 
 /**
- * A custom StringComposite that is configured with the Java-specific line break
- * characters and indentation starter and stoppers. It is also capable of adding
- * required imports automatically (if class names are acquired using 
- * {@link #getClassName(Class)} or {@link #getClassName(String)}.
+ * A {@link JavaComposite} is custom {@link StringComposite} that is configured
+ * with the Java-specific line break characters and indentation starter and
+ * stoppers. It is also capable of adding required imports automatically (if
+ * class names are acquired using {@link #getClassName(Class)} or
+ * {@link #getClassName(String)}.
  */
 public class JavaComposite extends StringComposite {
 
-	private Map<String, String> fields = new LinkedHashMap<String, String>();
-	private Map<String, String[]> fieldDocs = new LinkedHashMap<String, String[]>();
-	private Map<String, String> getters = new LinkedHashMap<String, String>();
-	private Map<String, String[]> getterDocs = new LinkedHashMap<String, String[]>();
-	private Map<String, String> setters = new LinkedHashMap<String, String>();
+	private final Map<String, String> fields = new LinkedHashMap<String, String>();
+	private final Map<String, String[]> fieldDocs = new LinkedHashMap<String, String[]>();
+	private final Map<String, String> getters = new LinkedHashMap<String, String>();
+	private final Map<String, String[]> getterDocs = new LinkedHashMap<String, String[]>();
+	private final Map<String, String> setters = new LinkedHashMap<String, String>();
+	
 	private ImportsPlaceholder importsPlaceholder;
 	private boolean interfaceMode;
 
@@ -95,6 +97,12 @@ public class JavaComposite extends StringComposite {
 		}
 	}
 	
+	/**
+	 * Adds a Javadoc comment containing the given paragraphs to the generated
+	 * code.
+	 * 
+	 * @param paragraphs the text of the comment
+	 */
 	public void addJavadoc(String... paragraphs) {
 		addDocInternal("/**", paragraphs);
 	}
@@ -155,7 +163,7 @@ public class JavaComposite extends StringComposite {
 	 *            the string to split
 	 * @param maxLength
 	 *            the maximum length of the lines returned
-	 * @return
+	 * @return the lines the text was split into
 	 */
 	public List<String> split(String text, int maxLength) {
 		String tail = text;
@@ -180,14 +188,39 @@ public class JavaComposite extends StringComposite {
 		return result;
 	}
 
+	/**
+	 * Returns a declaration of an {@link ArrayList} with the given name and
+	 * element type.
+	 * 
+	 * @param name the name of the list
+	 * @param type the type of elements contained in the list
+	 * @return a local variable declaration for the list
+	 */
 	public String declareArrayList(String name, String type) {
 		return IClassNameConstants.LIST + "<" + type + "> " + name  + " = new " + IClassNameConstants.ARRAY_LIST + "<" + type + ">();";
 	}
 
+	/**
+	 * Returns a declaration of an {@link LinkedHashMap} with the given name and
+	 * key/value types.
+	 * 
+	 * @param name the name of the map
+	 * @param keyType the type of elements used as keys
+	 * @param valueType the type of elements used as values
+	 * @return a local variable declaration for the map
+	 */
 	public String declareLinkedHashMap(String name, String keyType, String valueType) {
 		return IClassNameConstants.MAP + "<" + keyType + ", " + valueType + "> " + name  + " = new " + IClassNameConstants.LINKED_HASH_MAP + "<" + keyType + ", " + valueType + ">();";
 	}
 
+	/**
+	 * Returns a declaration of an {@link LinkedHashSet} with the given name and
+	 * element type.
+	 * 
+	 * @param name the name of the set
+	 * @param type the type of elements contained in the set
+	 * @return a local variable declaration for the set
+	 */
 	public String declareLinkedHashSet(String name, String type) {
 		return IClassNameConstants.SET + "<" + type + "> " + name + " = new " + IClassNameConstants.LINKED_HASH_SET + "<" + type + ">();";
 	}
@@ -269,7 +302,7 @@ public class JavaComposite extends StringComposite {
 	}
 	
 	/**
-	 * Insert all get and set methods for fields that were created by previous
+	 * Inserts all get and set methods for fields that were created by previous
 	 * calls to {@link #addFieldGet()} or {@link #addFieldGetSet()}.
 	 */
 	public void addGettersSetters() {
@@ -278,8 +311,8 @@ public class JavaComposite extends StringComposite {
 	}
 
 	/**
-	 * Insert all set methods for fields that were created by previous calls to
-	 * {@link #addFieldGet()} or {@link #addFieldGetSet()}.
+	 * Inserts all set methods for fields that were created by previous calls to
+	 * {@link #addFieldGetSet()}.
 	 */
 	private void addSetters() {
 		for (String fieldName : setters.keySet()) {
@@ -292,7 +325,7 @@ public class JavaComposite extends StringComposite {
 	}
 
 	/**
-	 * Insert all get methods for fields that were created by previous calls to
+	 * Inserts all get methods for fields that were created by previous calls to
 	 * {@link #addFieldGet()} or {@link #addFieldGetSet()}.
 	 */
 	private void addGetters() {
@@ -312,7 +345,7 @@ public class JavaComposite extends StringComposite {
 	}
 
 	/**
-	 * Insert all fields that were created by previous calls to
+	 * Inserts all fields that were created by previous calls to
 	 * {@link #addFieldGet()} or {@link #addFieldGetSet()}.
 	 */
 	public void addFields() {
@@ -372,9 +405,15 @@ public class JavaComposite extends StringComposite {
 		addLineBreak();
 	}
 
+	/**
+	 * Adds a placeholder where the required import statements will be inserted
+	 * later on. This must must be called at most once.
+	 * 
+	 * @throws IllegalStateException if method is called more than once.
+	 */
 	public void addImportsPlaceholder() {
 		if (this.importsPlaceholder != null) {
-			throw new IllegalArgumentException("Can't add placeholder for imports twice.");
+			throw new IllegalStateException("Can't add placeholder for imports twice.");
 		}
 		this.importsPlaceholder = new ImportsPlaceholder(getLineBreak());
 		add(this.importsPlaceholder);
@@ -384,9 +423,14 @@ public class JavaComposite extends StringComposite {
 	 * Returns the simple name for the given class and adds an import (if
 	 * required). If a class with the same simple name, but a different
 	 * qualified name is already imported, the qualified class name is returned.
+	 * Before this method is called, {@link #addImportsPlaceholder()} must be
+	 * called.
 	 * 
-	 * @param clazz the class the determine the name for
+	 * @param clazz
+	 *            the class the determine the name for
 	 * @return either a simple or qualified name
+	 * @throws IllegalStateException
+	 *             if {@link #addImportsPlaceholder()} was not called before
 	 */
 	public String getClassName(Class<?> clazz) {
 		return getClassName(clazz.getCanonicalName());
@@ -396,15 +440,18 @@ public class JavaComposite extends StringComposite {
 	 * Returns the simple name for the given qualified class name and adds an
 	 * import (if required). If a class with the same simple name, but a
 	 * different qualified name is already imported, the qualified class name is
-	 * returned as it is.
+	 * returned as it is. Before this method is called,
+	 * {@link #addImportsPlaceholder()} must be called.
 	 * 
 	 * @param clazz
 	 *            the class to determine the name for
 	 * @return either a simple or qualified name
+	 * @throws IllegalStateException
+	 *             if {@link #addImportsPlaceholder()} was not called before
 	 */
 	public String getClassName(String qualifiedClassName) {
 		if (this.importsPlaceholder == null) {
-			throw new IllegalArgumentException("No placeholder for imports found.");
+			throw new IllegalStateException("No placeholder for imports found.");
 		}
 		return this.importsPlaceholder.getClassName(qualifiedClassName);
 	}
@@ -426,7 +473,11 @@ public class JavaComposite extends StringComposite {
 	/**
 	 * Adds the simple name of a class that is implicitly imported (e.g.,
 	 * because it resides in the same package as the class that is currently
-	 * generated).
+	 * generated). Before this method is called,
+	 * {@link #addImportsPlaceholder()} must be called.
+	 * 
+	 * @throws IllegalStateException
+	 *             if {@link #addImportsPlaceholder()} was not called before
 	 */
 	public void addImplicitImport(String simpleClassName) {
 		if (this.importsPlaceholder == null) {
@@ -442,11 +493,17 @@ public class JavaComposite extends StringComposite {
 	/**
 	 * Sets the import placeholder. This can be useful in rare cases where the
 	 * imports that are generated by this {@link JavaComposite} must be added to
-	 * another {@link JavaComposite}.
+	 * another {@link JavaComposite}. Before this method is called,
+	 * {@link #addImportsPlaceholder()} must not be called.
+	 * 
+	 * @throws IllegalStateException
+	 *             if {@link #addImportsPlaceholder()} or
+	 *             {@link #setImportsPlaceholder(ImportsPlaceholder)} was called
+	 *             before.
 	 */
 	public void setImportsPlaceholder(ImportsPlaceholder importsPlaceholder) {
 		if (this.importsPlaceholder != null) {
-			throw new IllegalArgumentException("Placeholder for imports is already set.");
+			throw new IllegalStateException("Placeholder for imports is already set.");
 		}
 		this.importsPlaceholder = importsPlaceholder;
 	}
