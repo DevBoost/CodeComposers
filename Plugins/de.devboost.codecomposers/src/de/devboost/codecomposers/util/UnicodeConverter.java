@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006-2013
+ * Copyright (c) 2006-2014
  * Software Technology Group, Dresden University of Technology
  * DevBoost GmbH, Berlin, Amtsgericht Charlottenburg, HRB 140026
  * 
@@ -19,14 +19,10 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * A UnicodeConverter can read an input stream and convert unicode escape
- * sequences (backslash + uXXXX) to actual unicode characters. Each escaped
- * unicode sequence (6 bytes) is replaced by the respective UTF-8 byte sequence
+ * A UnicodeConverter can read an input stream and convert Unicode escape
+ * sequences (backslash + uXXXX) to actual Unicode characters. Each escaped
+ * Unicode sequence (6 bytes) is replaced by the respective UTF-8 byte sequence
  * (1 to 4 bytes).
- * 
- * TODO mseifert: information about replaced sequences must be passed to the
- * LocationMap or parser to make sure that the positions of elements found in
- * the stream are correct.
  */
 public class UnicodeConverter extends InputStream {
 
@@ -41,17 +37,17 @@ public class UnicodeConverter extends InputStream {
 	private InputStream inputStream;
 	
 	/**
-	 * Creates a new UnicodeConverter that reads from the given
-	 * stream.
+	 * Creates a new UnicodeConverter that reads from the given stream.
 	 * 
-	 * @param inputStream the original stream to read from
+	 * @param inputStream
+	 *            the original stream to read from
 	 */
 	public UnicodeConverter(InputStream inputStream) {
 		this.inputStream = inputStream;
 	}
 
 	/**
-	 * Reads one character from the stream. Escaped unicode characters are
+	 * Reads one character from the stream. Escaped Unicode characters are
 	 * converted to UTF-8 byte sequences (i.e., up to four bytes).
 	 */
 	@Override

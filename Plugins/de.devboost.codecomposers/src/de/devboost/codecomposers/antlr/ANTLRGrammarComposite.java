@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006-2013
+ * Copyright (c) 2006-2014
  * Software Technology Group, Dresden University of Technology
  * DevBoost GmbH, Berlin, Amtsgericht Charlottenburg, HRB 140026
  * 
@@ -15,10 +15,12 @@
  ******************************************************************************/
 package de.devboost.codecomposers.antlr;
 
+import de.devboost.codecomposers.StringComposite;
 import de.devboost.codecomposers.java.JavaComposite;
 
 /**
- * A custom StringComposite that can be used to build grammars for ANTLR.
+ * A {@link ANTLRGrammarComposite} is a custom {@link StringComposite} that can
+ * be used to build grammars for ANTLR.
  */
 public class ANTLRGrammarComposite extends JavaComposite {
 

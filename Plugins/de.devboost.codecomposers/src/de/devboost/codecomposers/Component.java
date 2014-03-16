@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006-2013
+ * Copyright (c) 2006-2014
  * Software Technology Group, Dresden University of Technology
  * DevBoost GmbH, Berlin, Amtsgericht Charlottenburg, HRB 140026
  * 
@@ -16,13 +16,25 @@
 package de.devboost.codecomposers;
 
 /**
- * A component is a piece of text that can be used to compose text documents. A
- * component can be atomic (a string) or composed of other components.
- * Components can be enabled and converted to strings.
+ * A {@link Component} is a piece of text that can be used to compose text
+ * documents. A {@link Component} can be atomic (a string) or composed of other
+ * {@link Component}s. {@link Component}s can be enabled and converted to
+ * strings.
  */
 public interface Component {
-	
+
+	/**
+	 * Returns <code>true</code> if this {@link Component} is enabled (i.e., if
+	 * it shall appear in the generated code).
+	 */
 	public boolean isEnabled();
 	
+	/**
+	 * Converts this {@link Component} to a String using the given number of 
+	 * tabs as indentation.
+	 * 
+	 * @param tabs the number of tabs to put before each line
+	 * @return a String representation of this {@link Component}
+	 */
 	public String toString(int tabs);
 }

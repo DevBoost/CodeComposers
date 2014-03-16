@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006-2012
+ * Copyright (c) 2006-2014
  * Software Technology Group, Dresden University of Technology
  * DevBoost GmbH, Berlin, Amtsgericht Charlottenburg, HRB 140026
  * 
@@ -19,11 +19,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A StringComposite can be used to compose text fragments. In contrast to a
- * StringBuilder or StringBuffer, this class can enable and disable text
- * fragments. This is useful when text is composed, but later unnecessary parts
- * need to be removed.
- * 
+ * A {@link StringComposite} can be used to compose text fragments. In contrast
+ * to a {@link StringBuilder} or {@link StringBuffer}, this class can enable and
+ * disable text fragments. This is useful when text is composed, but unnecessary
+ * parts need to be removed later.
+ * <p>
  * This class can be used by code generators to insert variable declarations
  * only if they are referenced.
  */
@@ -37,38 +37,40 @@ public class StringComposite {
 	}
 	
 	/**
-	 * A CompositeNode is part of a tree and contains exactly
-	 * one StringComponent.
+	 * A CompositeNode is part of a tree and contains exactly one
+	 * {@link StringComponent}.
 	 */
 	public class ComponentNode implements Node {
 
-		private StringComponent component;
-		private Tree parent;
+		private final Tree parent;
+		private final StringComponent component;
 
 		public ComponentNode(Tree parent, StringComponent component) {
+			super();
 			this.parent = parent;
 			this.component = component;
+		}
+
+		public Tree getParent() {
+			return parent;
 		}
 
 		public StringComponent getComponent() {
 			return component;
 		}
-		
-		public Tree getParent() {
-			return parent;
-		}
 	}
 	
 	/**
-	 * A Tree is a container for Nodes. Since trees are
-	 * nodes as well, they can contain further trees. 
+	 * A Tree is a container for Nodes. Since trees are nodes as well, they can
+	 * contain further trees.
 	 */
 	public class Tree implements Node {
 		
-		private List<Node> children = new ArrayList<Node>();
-		private Tree parent;
+		private final List<Node> children = new ArrayList<Node>();
+		private final Tree parent;
 
 		public Tree(Tree parent) {
+			super();
 			this.parent = parent;
 			if (parent != null) {
 				parent.addChildNode(this);
@@ -88,17 +90,23 @@ public class StringComposite {
 		}
 	}
 
-	// we do intentionally not use the platform specific line separation
-	// character, because the files that are generated using this StringComposite
-	// shall look the same on all platforms. Eclipse does understand the different
-	// kinds of line separators anyway and treats them correctly on all platforms.
+	/**
+	 * We do intentionally not use the platform specific line separation
+	 * character, because the files that are generated using this
+	 * {@link StringComposite} shall look the same on all platforms. Eclipse
+	 * does understand the different kinds of line separators anyway and treats
+	 * them correctly on all platforms.
+	 */
 	public static final String UNIX_LINE_BREAK = "\n";
 	
-	private List<StringComponent> components = new ArrayList<StringComponent>();
+	private static final int MAX_TABS = 20;
+	private static final String[] TAB_STRINGS = new String[20];
+	
+	private final List<StringComponent> components = new ArrayList<StringComponent>();
 
-	private List<String> lineBreakers = new ArrayList<String>();
-	private List<String> indentationStarters = new ArrayList<String>();
-	private List<String> indentationStoppers = new ArrayList<String>();
+	private final List<String> lineBreakers = new ArrayList<String>();
+	private final List<String> indentationStarters = new ArrayList<String>();
+	private final List<String> indentationStoppers = new ArrayList<String>();
 
 	private boolean enabled;
 
@@ -298,9 +306,6 @@ public class StringComposite {
 		return false;
 	}
 
-	private static final int MAX_TABS = 20;
-	private static final String[] TAB_STRINGS = new String[20];
-	
 	public static String getTabText(int tabs) {
 		if (tabs < 0) {
 			return "";

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006-2013
+ * Copyright (c) 2006-2014
  * Software Technology Group, Dresden University of Technology
  * DevBoost GmbH, Berlin, Amtsgericht Charlottenburg, HRB 140026
  * 
@@ -16,9 +16,9 @@
 package de.devboost.codecomposers;
 
 /**
- * A StringComponent is a part of a StringComposite. By default all
- * StringComponents are disabled and do thus not appear when the containing
- * StringComposite is converted to a String.
+ * A {@link StringComponent} is a part of a {@link StringComposite}. By default
+ * all {@link StringComponent}s are disabled and do thus not appear when the
+ * containing {@link StringComposite} is converted to a String.
  */
 public class StringComponent implements Component {
 
@@ -26,7 +26,16 @@ public class StringComponent implements Component {
 	private boolean enabled = false;
 	private String enabler;
 	
+	/**
+	 * Creates a new {@link StringComponent} containing the given text. The
+	 * {@link StringComponent} is only enabled if the given 'enabler' is passed
+	 * to {@link #enable(String)} or if 'enabler' is <code>null</code>.
+	 * 
+	 * @param text the text to print
+	 * @param enabler a text that is required to enable this component
+	 */
 	public StringComponent(String text, String enabler) {
+		super();
 		this.text = text;
 		this.enabler = enabler;
 		if (enabler == null) {
@@ -38,6 +47,7 @@ public class StringComponent implements Component {
 		return text;
 	}
 
+	@Override
 	public boolean isEnabled() {
 		return enabled;
 	}
@@ -53,6 +63,7 @@ public class StringComponent implements Component {
 		return toString(0);
 	}
 	
+	@Override
 	public String toString(int tabs) {
 		String textValue = getText();
 		if (tabs == 0) {

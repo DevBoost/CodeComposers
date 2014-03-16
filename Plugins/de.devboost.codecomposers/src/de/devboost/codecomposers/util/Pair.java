@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006-2012
+ * Copyright (c) 2006-2014
  * Software Technology Group, Dresden University of Technology
  * DevBoost GmbH, Berlin, Amtsgericht Charlottenburg, HRB 140026
  * 
@@ -16,18 +16,21 @@
 package de.devboost.codecomposers.util;
 
 /**
- * A typed pair of objects. Two pairs are equal if both
- * the left and the right object are equal.
- *
- * @param <T1> the type of the first (left) object
- * @param <T2> the type of the second (right) object
+ * A typed pair of objects. Two pairs are equal if both the left and the right
+ * object are equal.
+ * 
+ * @param <T1>
+ *            the type of the first (left) object
+ * @param <T2>
+ *            the type of the second (right) object
  */
 public class Pair<T1, T2> {
 	
-	private T1 left; 
-	private T2 right;
+	private final T1 left; 
+	private final T2 right;
 	
 	public Pair(T1 left, T2 right) {
+		super();
 		this.left = left;
 		this.right = right;
 	}

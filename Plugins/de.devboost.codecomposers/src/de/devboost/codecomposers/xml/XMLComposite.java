@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006-2012
+ * Copyright (c) 2006-2014
  * Software Technology Group, Dresden University of Technology
  * DevBoost GmbH, Berlin, Amtsgericht Charlottenburg, HRB 140026
  * 
@@ -19,9 +19,10 @@ import de.devboost.codecomposers.Component;
 import de.devboost.codecomposers.StringComposite;
 
 /**
- * A custom StringComposite that can be used to build XML
- * documents.
+ * A {@link XMLComposite} is a custom {@link StringComposite} that can be used
+ * to build XML documents.
  */
+// TODO Pre-compile regular expressions
 public class XMLComposite extends StringComposite {
 	
 	public XMLComposite() {
