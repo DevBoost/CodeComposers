@@ -30,7 +30,7 @@ import de.devboost.codecomposers.util.StringUtil;
 
 /**
  * A {@link JavaComposite} is custom {@link StringComposite} that is configured
- * with the Java-specific line break characters and indentation starter and
+ * with the Java-specific line break characters and indentation starters and
  * stoppers. It is also capable of adding required imports automatically (if
  * class names are acquired using {@link #getClassName(Class)} or
  * {@link #getClassName(String)}.
