@@ -473,8 +473,9 @@ public class JavaComposite extends StringComposite {
 	/**
 	 * Adds the simple name of a class that is implicitly imported (e.g.,
 	 * because it resides in the same package as the class that is currently
-	 * generated). Before this method is called,
-	 * {@link #addImportsPlaceholder()} must be called.
+	 * generated). This can also be used to protect type parameters of the 
+	 * generated class to overlap with other types. Before this method is 
+	 * called, {@link #addImportsPlaceholder()} must be called.
 	 * 
 	 * @throws IllegalStateException
 	 *             if {@link #addImportsPlaceholder()} was not called before
