@@ -28,6 +28,10 @@ import java.util.Set;
  */
 public class ClassNameConstants {
 
+	public static String OBJECT(JavaComposite jc) {
+		return getClassName(jc, Object.class.getName());
+	}
+
 	public static String ARRAY_LIST(JavaComposite jc) {
 		return getClassName(jc, ArrayList.class.getName());
 	}
