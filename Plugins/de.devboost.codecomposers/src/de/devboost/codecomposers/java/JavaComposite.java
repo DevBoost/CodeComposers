@@ -197,7 +197,7 @@ public class JavaComposite extends StringComposite {
 	 * @return a local variable declaration for the list
 	 */
 	public String declareArrayList(String name, String type) {
-		return IClassNameConstants.LIST + "<" + type + "> " + name  + " = new " + IClassNameConstants.ARRAY_LIST + "<" + type + ">();";
+		return ClassNameConstants.LIST(this) + "<" + type + "> " + name  + " = new " + ClassNameConstants.ARRAY_LIST(this) + "<" + type + ">();";
 	}
 
 	/**
@@ -210,7 +210,7 @@ public class JavaComposite extends StringComposite {
 	 * @return a local variable declaration for the map
 	 */
 	public String declareLinkedHashMap(String name, String keyType, String valueType) {
-		return IClassNameConstants.MAP + "<" + keyType + ", " + valueType + "> " + name  + " = new " + IClassNameConstants.LINKED_HASH_MAP + "<" + keyType + ", " + valueType + ">();";
+		return ClassNameConstants.MAP(this) + "<" + keyType + ", " + valueType + "> " + name  + " = new " + ClassNameConstants.LINKED_HASH_MAP(this) + "<" + keyType + ", " + valueType + ">();";
 	}
 
 	/**
@@ -222,7 +222,7 @@ public class JavaComposite extends StringComposite {
 	 * @return a local variable declaration for the set
 	 */
 	public String declareLinkedHashSet(String name, String type) {
-		return IClassNameConstants.SET + "<" + type + "> " + name + " = new " + IClassNameConstants.LINKED_HASH_SET + "<" + type + ">();";
+		return ClassNameConstants.SET(this) + "<" + type + "> " + name + " = new " + ClassNameConstants.LINKED_HASH_SET(this) + "<" + type + ">();";
 	}
 
 	/**
