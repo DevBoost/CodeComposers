@@ -104,7 +104,26 @@ public class JavaComposite extends StringComposite {
 	 * @param paragraphs the text of the comment
 	 */
 	public void addJavadoc(String... paragraphs) {
+		if (paragraphs != null && paragraphs.length > 1) {
+			// If there are multiple paragraphs, we wrap each paragraph in a
+			// respective HTML tag.
+			for (int i = 0; i < paragraphs.length; i++) {
+				paragraphs[i] = wrap(paragraphs[i]);
+			}
+		}
 		addDocInternal("/**", paragraphs);
+	}
+
+	private String wrap(String text) {
+		if (text.startsWith("@")) {
+			return text;
+		}
+		
+		if (text.isEmpty()) {
+			return text;
+		}
+		
+		return "<p>\n" + text + "\n</p>";
 	}
 
 	public void addDoc(String... paragraphs) {
