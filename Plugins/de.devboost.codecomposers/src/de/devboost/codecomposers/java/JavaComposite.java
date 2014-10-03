@@ -45,6 +45,7 @@ public class JavaComposite extends StringComposite {
 	
 	private ImportsPlaceholder importsPlaceholder;
 	private boolean interfaceMode;
+	private boolean includeDebugStatements;
 
 	public JavaComposite() {
 		super(true);
@@ -569,11 +570,28 @@ public class JavaComposite extends StringComposite {
 		return result;
 	}
 
+	public StringComposite addDebugStatement(String text) {
+		if (includeDebugStatements) {
+			return add(text);
+		} else {
+			return this;
+		}
+	}
+
 	/**
 	 * Set the interface mode (i.e., whether to insert two line breaks after 
 	 * lines that end with a semicolon).
 	 */
 	public void setInterfaceMode(boolean interfaceMode) {
 		this.interfaceMode = interfaceMode;
+	}
+
+	/**
+	 * Sets whether statements which are added using
+	 * {@link #addDebugStatement(String)} shall be included in the output or
+	 * not.
+	 */
+	public void setIncludeDebugStatements(boolean includeDebugStatements) {
+		this.includeDebugStatements = includeDebugStatements;
 	}
 }
