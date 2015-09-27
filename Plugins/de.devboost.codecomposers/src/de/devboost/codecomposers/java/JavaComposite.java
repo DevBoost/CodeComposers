@@ -594,4 +594,12 @@ public class JavaComposite extends StringComposite {
 	public void setIncludeDebugStatements(boolean includeDebugStatements) {
 		this.includeDebugStatements = includeDebugStatements;
 	}
+
+	/**
+	 * Returns <code>true</code> if this {@link JavaComposite} is configured to generate an interface, otherwise
+	 * <code>false</code> is returned.
+	 */
+	public boolean isInterfaceMode() {
+		return interfaceMode;
+	}
 }
