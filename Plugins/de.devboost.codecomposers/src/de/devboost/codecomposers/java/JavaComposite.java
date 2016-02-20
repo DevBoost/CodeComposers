@@ -37,18 +37,27 @@ import de.devboost.codecomposers.util.StringUtil;
  */
 public class JavaComposite extends StringComposite {
 
+	private static final int DEFAULT_MAX_LINE_LENGTH = 80;
+	
 	private final Map<String, String> fields = new LinkedHashMap<String, String>();
 	private final Map<String, String[]> fieldDocs = new LinkedHashMap<String, String[]>();
 	private final Map<String, String> getters = new LinkedHashMap<String, String>();
 	private final Map<String, String[]> getterDocs = new LinkedHashMap<String, String[]>();
 	private final Map<String, String> setters = new LinkedHashMap<String, String>();
 	
+	private final int maxLineLength;
+	
 	private ImportsPlaceholder importsPlaceholder;
 	private boolean interfaceMode;
 	private boolean includeDebugStatements;
-
+	
 	public JavaComposite() {
+		this(DEFAULT_MAX_LINE_LENGTH);
+	}
+
+	public JavaComposite(int maxLineLength) {
 		super(true);
+		this.maxLineLength = maxLineLength;
 		addIndentationStarter("{");
 		addIndentationStopper("}");
 		addLineBreaker("{");
@@ -89,8 +98,8 @@ public class JavaComposite extends StringComposite {
 		for (String paragraph : paragraphs) {
 			String[] chunks = paragraph.split("\n");
 			for (String chunk : chunks) {
-				// split chunk into lines of 80 characters (split at space)
-				List<String> lines = split(chunk, 80);
+				// split chunk into lines if they exceed the maximum line length (split at space)
+				List<String> lines = split(chunk, maxLineLength);
 				for (String line : lines) {
 					add("// " + line);
 				}
@@ -164,8 +173,8 @@ public class JavaComposite extends StringComposite {
 			}
 			String[] chunks = paragraph.split("\n");
 			for (String chunk : chunks) {
-				// split chunk into lines of 80 characters (split at space)
-				List<String> lines = split(chunk, 80);
+				// split chunk into lines if they exceed the maximum line length (split at space)
+				List<String> lines = split(chunk, maxLineLength);
 				for (String line : lines) {
 					add(" * " + line);
 				}
