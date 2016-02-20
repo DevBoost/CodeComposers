@@ -16,8 +16,7 @@
 package de.devboost.codecomposers.util;
 
 /**
- * An interface for classes that can convert objects of 'SourceType' to a
- * string.
+ * An interface for classes that can convert objects of 'SourceType' to a string.
  * 
  * @param <SourceType>
  *            the type of the object to convert

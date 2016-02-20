@@ -20,7 +20,7 @@ public class Import {
 	private final String simpleName;
 	private final String qualifiedName;
 	private final boolean isStatic;
-	
+
 	public Import(String simpleName, String qualifiedName, boolean isStatic) {
 		super();
 		this.simpleName = simpleName;

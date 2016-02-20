@@ -16,23 +16,23 @@
 package de.devboost.codecomposers;
 
 /**
- * A {@link StringComponent} is a part of a {@link StringComposite}. By default
- * all {@link StringComponent}s are disabled and do thus not appear when the
- * containing {@link StringComposite} is converted to a String.
+ * A {@link StringComponent} is a part of a {@link StringComposite}. By default all {@link StringComponent}s are
+ * disabled and do thus not appear when the containing {@link StringComposite} is converted to a String.
  */
 public class StringComponent implements Component {
 
 	private final String text;
 	private boolean enabled = false;
 	private String enabler;
-	
+
 	/**
-	 * Creates a new {@link StringComponent} containing the given text. The
-	 * {@link StringComponent} is only enabled if the given 'enabler' is passed
-	 * to {@link #enable(String)} or if 'enabler' is <code>null</code>.
+	 * Creates a new {@link StringComponent} containing the given text. The {@link StringComponent} is only enabled if
+	 * the given 'enabler' is passed to {@link #enable(String)} or if 'enabler' is <code>null</code>.
 	 * 
-	 * @param text the text to print
-	 * @param enabler a text that is required to enable this component
+	 * @param text
+	 *            the text to print
+	 * @param enabler
+	 *            a text that is required to enable this component
 	 */
 	public StringComponent(String text, String enabler) {
 		super();
@@ -51,18 +51,18 @@ public class StringComponent implements Component {
 	public boolean isEnabled() {
 		return enabled;
 	}
-	
+
 	public void enable(String text) {
 		if (enabler != null && text != null && text.contains(enabler)) {
 			enabled = true;
 		}
 	}
-	
+
 	@Override
 	public String toString() {
 		return toString(0);
 	}
-	
+
 	@Override
 	public String toString(int tabs) {
 		String textValue = getText();

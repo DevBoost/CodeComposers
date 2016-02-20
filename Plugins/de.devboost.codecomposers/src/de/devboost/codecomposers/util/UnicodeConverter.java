@@ -19,10 +19,9 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * A UnicodeConverter can read an input stream and convert Unicode escape
- * sequences (backslash + uXXXX) to actual Unicode characters. Each escaped
- * Unicode sequence (6 bytes) is replaced by the respective UTF-8 byte sequence
- * (1 to 4 bytes).
+ * A UnicodeConverter can read an input stream and convert Unicode escape sequences (backslash + uXXXX) to actual
+ * Unicode characters. Each escaped Unicode sequence (6 bytes) is replaced by the respective UTF-8 byte sequence (1 to 4
+ * bytes).
  */
 public class UnicodeConverter extends InputStream {
 
@@ -35,7 +34,7 @@ public class UnicodeConverter extends InputStream {
 	 * The original input stream.
 	 */
 	private InputStream inputStream;
-	
+
 	/**
 	 * Creates a new UnicodeConverter that reads from the given stream.
 	 * 
@@ -47,8 +46,8 @@ public class UnicodeConverter extends InputStream {
 	}
 
 	/**
-	 * Reads one character from the stream. Escaped Unicode characters are
-	 * converted to UTF-8 byte sequences (i.e., up to four bytes).
+	 * Reads one character from the stream. Escaped Unicode characters are converted to UTF-8 byte sequences (i.e., up
+	 * to four bytes).
 	 */
 	@Override
 	public int read() throws IOException {
@@ -135,7 +134,7 @@ public class UnicodeConverter extends InputStream {
 		// do not encode negative numbers, because they signal EOF
 		return read;
 	}
-	
+
 	private int encodePushAndReturn(int next) {
 		byte[] encoded = encode(next);
 		// we must add the bytes backwards because we use a stack
@@ -176,7 +175,7 @@ public class UnicodeConverter extends InputStream {
 	}
 
 	public static byte[] encode(int ch) {
-		//return encode(new int[]{ch});
+		// return encode(new int[]{ch});
 		int bytesNeeded = 0;
 		if (ch < 0x80) {
 			++bytesNeeded;
@@ -208,7 +207,7 @@ public class UnicodeConverter extends InputStream {
 		}
 		return utf8;
 	}
-	
+
 	public static byte[] encode(int[] ch) {
 		// determine how many bytes are needed for the complete conversion
 		int bytesNeeded = 0;

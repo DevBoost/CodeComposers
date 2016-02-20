@@ -29,28 +29,26 @@ import de.devboost.codecomposers.util.Pair;
 import de.devboost.codecomposers.util.StringUtil;
 
 /**
- * A {@link JavaComposite} is custom {@link StringComposite} that is configured
- * with the Java-specific line break characters and indentation starters and
- * stoppers. It is also capable of adding required imports automatically (if
- * class names are acquired using {@link #getClassName(Class)} or
- * {@link #getClassName(String)}.
+ * A {@link JavaComposite} is custom {@link StringComposite} that is configured with the Java-specific line break
+ * characters and indentation starters and stoppers. It is also capable of adding required imports automatically (if
+ * class names are acquired using {@link #getClassName(Class)} or {@link #getClassName(String)}.
  */
 public class JavaComposite extends StringComposite {
 
 	private static final int DEFAULT_MAX_LINE_LENGTH = 80;
-	
+
 	private final Map<String, String> fields = new LinkedHashMap<String, String>();
 	private final Map<String, String[]> fieldDocs = new LinkedHashMap<String, String[]>();
 	private final Map<String, String> getters = new LinkedHashMap<String, String>();
 	private final Map<String, String[]> getterDocs = new LinkedHashMap<String, String[]>();
 	private final Map<String, String> setters = new LinkedHashMap<String, String>();
-	
+
 	private final int maxLineLength;
-	
+
 	private ImportsPlaceholder importsPlaceholder;
 	private boolean interfaceMode;
 	private boolean includeDebugStatements;
-	
+
 	public JavaComposite() {
 		this(DEFAULT_MAX_LINE_LENGTH);
 	}
@@ -73,23 +71,22 @@ public class JavaComposite extends StringComposite {
 		if (superResult) {
 			return true;
 		}
-		
+
 		// add line breaks after single line comments
 		String componentText = component.toString();
 		boolean isSingleLineComment = componentText.contains("//");
 		if (isSingleLineComment) {
 			return true;
 		}
-		
-		boolean isMultiLineComment = 
-			"/*".equals(componentText) ||      // start of multi-line comment
-			"/**".equals(componentText) ||     // start of Javadoc comment
-			componentText.startsWith(" * ") || // intermediate line
-			" */".equals(componentText);       // end of multi-line comment
+
+		boolean isMultiLineComment = "/*".equals(componentText) || // start of multi-line comment
+				"/**".equals(componentText) || // start of Javadoc comment
+				componentText.startsWith(" * ") || // intermediate line
+				" */".equals(componentText); // end of multi-line comment
 		if (isMultiLineComment) {
 			return true;
 		}
-		
+
 		boolean isAnnotation = componentText.startsWith("@");
 		return isAnnotation;
 	}
@@ -106,12 +103,12 @@ public class JavaComposite extends StringComposite {
 			}
 		}
 	}
-	
+
 	/**
-	 * Adds a Javadoc comment containing the given paragraphs to the generated
-	 * code.
+	 * Adds a Javadoc comment containing the given paragraphs to the generated code.
 	 * 
-	 * @param paragraphs the text of the comment
+	 * @param paragraphs
+	 *            the text of the comment
 	 */
 	public void addJavadoc(String... paragraphs) {
 		if (paragraphs != null && paragraphs.length > 1) {
@@ -128,11 +125,11 @@ public class JavaComposite extends StringComposite {
 		if (text.startsWith("@")) {
 			return text;
 		}
-		
+
 		if (text.isEmpty()) {
 			return text;
 		}
-		
+
 		return "<p>\n" + text + "\n</p>";
 	}
 
@@ -145,7 +142,7 @@ public class JavaComposite extends StringComposite {
 		if (paragraphs == null || paragraphs.length == 0) {
 			return;
 		}
-		
+
 		add(prefix);
 		boolean wasParameterParagraph = false;
 		for (String paragraph : paragraphs) {
@@ -182,11 +179,10 @@ public class JavaComposite extends StringComposite {
 		}
 		add(" */");
 	}
-	
+
 	/**
-	 * Splits the given text into lines where each line does contain at most
-	 * 'maxLength' characters. The text is split at space characters (i.e.,
-	 * words are not split).
+	 * Splits the given text into lines where each line does contain at most 'maxLength' characters. The text is split
+	 * at space characters (i.e., words are not split).
 	 * 
 	 * @param text
 	 *            the string to split
@@ -218,68 +214,77 @@ public class JavaComposite extends StringComposite {
 	}
 
 	/**
-	 * Returns a declaration of an {@link ArrayList} with the given name and
-	 * element type.
+	 * Returns a declaration of an {@link ArrayList} with the given name and element type.
 	 * 
-	 * @param name the name of the list
-	 * @param type the type of elements contained in the list
+	 * @param name
+	 *            the name of the list
+	 * @param type
+	 *            the type of elements contained in the list
 	 * @return a local variable declaration for the list
 	 */
 	public String declareArrayList(String name, String type) {
-		return ClassNameConstants.LIST(this) + "<" + type + "> " + name  + " = new " + ClassNameConstants.ARRAY_LIST(this) + "<" + type + ">();";
+		return ClassNameConstants.LIST(this) + "<" + type + "> " + name + " = new "
+				+ ClassNameConstants.ARRAY_LIST(this) + "<" + type + ">();";
 	}
 
 	/**
-	 * Returns a declaration of an {@link LinkedHashMap} with the given name and
-	 * key/value types.
+	 * Returns a declaration of an {@link LinkedHashMap} with the given name and key/value types.
 	 * 
-	 * @param name the name of the map
-	 * @param keyType the type of elements used as keys
-	 * @param valueType the type of elements used as values
+	 * @param name
+	 *            the name of the map
+	 * @param keyType
+	 *            the type of elements used as keys
+	 * @param valueType
+	 *            the type of elements used as values
 	 * @return a local variable declaration for the map
 	 */
 	public String declareLinkedHashMap(String name, String keyType, String valueType) {
-		return ClassNameConstants.MAP(this) + "<" + keyType + ", " + valueType + "> " + name  + " = new " + ClassNameConstants.LINKED_HASH_MAP(this) + "<" + keyType + ", " + valueType + ">();";
+		return ClassNameConstants.MAP(this) + "<" + keyType + ", " + valueType + "> " + name + " = new "
+				+ ClassNameConstants.LINKED_HASH_MAP(this) + "<" + keyType + ", " + valueType + ">();";
 	}
 
 	/**
-	 * Returns a declaration of an {@link LinkedHashSet} with the given name and
-	 * element type.
+	 * Returns a declaration of an {@link LinkedHashSet} with the given name and element type.
 	 * 
-	 * @param name the name of the set
-	 * @param type the type of elements contained in the set
+	 * @param name
+	 *            the name of the set
+	 * @param type
+	 *            the type of elements contained in the set
 	 * @return a local variable declaration for the set
 	 */
 	public String declareLinkedHashSet(String name, String type) {
-		return ClassNameConstants.SET(this) + "<" + type + "> " + name + " = new " + ClassNameConstants.LINKED_HASH_SET(this) + "<" + type + ">();";
+		return ClassNameConstants.SET(this) + "<" + type + "> " + name + " = new "
+				+ ClassNameConstants.LINKED_HASH_SET(this) + "<" + type + ">();";
 	}
 
 	/**
-	 * Adds a field with the given name and type and the respective get and set
-	 * methods.
+	 * Adds a field with the given name and type and the respective get and set methods.
 	 * 
-	 * @param fieldName the name of the field to add
-	 * @param type the type of the field
+	 * @param fieldName
+	 *            the name of the field to add
+	 * @param type
+	 *            the type of the field
 	 */
 	public void addFieldGetSet(String fieldName, String type) {
 		addFieldGetSet(fieldName, type, (String[]) null);
 	}
 
 	/**
-	 * Adds a field with the given name and type and the respective get and set
-	 * methods.
+	 * Adds a field with the given name and type and the respective get and set methods.
 	 * 
-	 * @param fieldName the name of the field to add
-	 * @param type the type of the field
-	 * @param fieldDoc the documentation for the field
+	 * @param fieldName
+	 *            the name of the field to add
+	 * @param type
+	 *            the type of the field
+	 * @param fieldDoc
+	 *            the documentation for the field
 	 */
 	public void addFieldGetSet(String fieldName, String type, String... fieldDoc) {
 		addFieldGetSet(fieldName, type, fieldDoc, null);
 	}
 
 	/**
-	 * Adds a field with the given name and type and the respective get and set
-	 * methods.
+	 * Adds a field with the given name and type and the respective get and set methods.
 	 * 
 	 * @param fieldName
 	 *            the name of the field to add
@@ -296,8 +301,7 @@ public class JavaComposite extends StringComposite {
 	}
 
 	/**
-	 * Adds a field with the given name and type and the respective get method.
-	 * No set method is added.
+	 * Adds a field with the given name and type and the respective get method. No set method is added.
 	 * 
 	 * @param fieldName
 	 *            the name of the field to add
@@ -309,10 +313,9 @@ public class JavaComposite extends StringComposite {
 	public void addFieldGet(String fieldName, String type, String... fieldDoc) {
 		addFieldGet(fieldName, type, fieldDoc, null);
 	}
-	
+
 	/**
-	 * Adds a field with the given name and type and the respective get method.
-	 * No set method is added.
+	 * Adds a field with the given name and type and the respective get method. No set method is added.
 	 * 
 	 * @param fieldName
 	 *            the name of the field to add
@@ -329,10 +332,10 @@ public class JavaComposite extends StringComposite {
 		getters.put(fieldName, type);
 		getterDocs.put(fieldName, getterDoc);
 	}
-	
+
 	/**
-	 * Inserts all get and set methods for fields that were created by previous
-	 * calls to {@link #addFieldGet()} or {@link #addFieldGetSet()}.
+	 * Inserts all get and set methods for fields that were created by previous calls to {@link #addFieldGet()} or
+	 * {@link #addFieldGetSet()}.
 	 */
 	public void addGettersSetters() {
 		addGetters();
@@ -340,8 +343,7 @@ public class JavaComposite extends StringComposite {
 	}
 
 	/**
-	 * Inserts all set methods for fields that were created by previous calls to
-	 * {@link #addFieldGetSet()}.
+	 * Inserts all set methods for fields that were created by previous calls to {@link #addFieldGetSet()}.
 	 */
 	private void addSetters() {
 		for (String fieldName : setters.keySet()) {
@@ -354,8 +356,8 @@ public class JavaComposite extends StringComposite {
 	}
 
 	/**
-	 * Inserts all get methods for fields that were created by previous calls to
-	 * {@link #addFieldGet()} or {@link #addFieldGetSet()}.
+	 * Inserts all get methods for fields that were created by previous calls to {@link #addFieldGet()} or
+	 * {@link #addFieldGetSet()}.
 	 */
 	private void addGetters() {
 		for (String fieldName : getters.keySet()) {
@@ -374,8 +376,7 @@ public class JavaComposite extends StringComposite {
 	}
 
 	/**
-	 * Inserts all fields that were created by previous calls to
-	 * {@link #addFieldGet()} or {@link #addFieldGetSet()}.
+	 * Inserts all fields that were created by previous calls to {@link #addFieldGet()} or {@link #addFieldGetSet()}.
 	 */
 	public void addFields() {
 		for (String fieldName : fields.keySet()) {
@@ -386,12 +387,11 @@ public class JavaComposite extends StringComposite {
 			addLineBreak();
 		}
 	}
-	
+
 	/**
-	 * Creates a set of methods that contain the given statements. Each
-	 * statement is represented by its content (the code) and the number of
-	 * bytes that this code requires. The method is automatically split if the
-	 * code exceeds the 64k limit.
+	 * Creates a set of methods that contain the given statements. Each statement is represented by its content (the
+	 * code) and the number of bytes that this code requires. The method is automatically split if the code exceeds the
+	 * 64k limit.
 	 * 
 	 * @param name
 	 *            a prefix for the method names
@@ -399,7 +399,7 @@ public class JavaComposite extends StringComposite {
 	 *            the statements to add to the method body
 	 */
 	public void addLargeMethod(String name, List<Pair<String, Integer>> statements) {
-		
+
 		int bytesUsedInCurrentMethod = 0;
 		boolean methodIsFull = true;
 		int i = 0;
@@ -413,7 +413,7 @@ public class JavaComposite extends StringComposite {
 			}
 			add(statement.getLeft());
 			bytesUsedInCurrentMethod += statement.getRight();
-			
+
 			if (bytesUsedInCurrentMethod >= 63 * 1024) {
 				methodIsFull = true;
 				bytesUsedInCurrentMethod = 0;
@@ -424,7 +424,7 @@ public class JavaComposite extends StringComposite {
 			}
 			i++;
 		}
-		
+
 		// create a name() method that calls all nameX() methods
 		add("public static void " + name + "() {");
 		for (int c = 0; c < numberOfMethods; c++) {
@@ -435,10 +435,11 @@ public class JavaComposite extends StringComposite {
 	}
 
 	/**
-	 * Adds a placeholder where the required import statements will be inserted
-	 * later on. This must must be called at most once.
+	 * Adds a placeholder where the required import statements will be inserted later on. This must must be called at
+	 * most once.
 	 * 
-	 * @throws IllegalStateException if method is called more than once.
+	 * @throws IllegalStateException
+	 *             if method is called more than once.
 	 */
 	public void addImportsPlaceholder() {
 		if (this.importsPlaceholder != null) {
@@ -447,13 +448,11 @@ public class JavaComposite extends StringComposite {
 		this.importsPlaceholder = new ImportsPlaceholder(getLineBreak());
 		add(this.importsPlaceholder);
 	}
-	
+
 	/**
-	 * Returns the simple name for the given class and adds an import (if
-	 * required). If a class with the same simple name, but a different
-	 * qualified name is already imported, the qualified class name is returned.
-	 * Before this method is called, {@link #addImportsPlaceholder()} must be
-	 * called.
+	 * Returns the simple name for the given class and adds an import (if required). If a class with the same simple
+	 * name, but a different qualified name is already imported, the qualified class name is returned. Before this
+	 * method is called, {@link #addImportsPlaceholder()} must be called.
 	 * 
 	 * @param clazz
 	 *            the class the determine the name for
@@ -466,11 +465,9 @@ public class JavaComposite extends StringComposite {
 	}
 
 	/**
-	 * Returns the simple name for the given qualified class name and adds an
-	 * import (if required). If a class with the same simple name, but a
-	 * different qualified name is already imported, the qualified class name is
-	 * returned as it is. Before this method is called,
-	 * {@link #addImportsPlaceholder()} must be called.
+	 * Returns the simple name for the given qualified class name and adds an import (if required). If a class with the
+	 * same simple name, but a different qualified name is already imported, the qualified class name is returned as it
+	 * is. Before this method is called, {@link #addImportsPlaceholder()} must be called.
 	 * 
 	 * @param clazz
 	 *            the class to determine the name for
@@ -486,9 +483,8 @@ public class JavaComposite extends StringComposite {
 	}
 
 	/**
-	 * Returns the simple name for the given qualified member and adds a static
-	 * import (if required). If a class or member with the same simple name, but
-	 * a different qualified name is already imported, the qualified member name 
+	 * Returns the simple name for the given qualified member and adds a static import (if required). If a class or
+	 * member with the same simple name, but a different qualified name is already imported, the qualified member name
 	 * is returned as it is.
 	 * 
 	 * @param qualifiedMemberName
@@ -498,13 +494,11 @@ public class JavaComposite extends StringComposite {
 	public String getStaticMemberName(String qualifiedMemberName) {
 		return this.importsPlaceholder.getStaticMemberName(qualifiedMemberName);
 	}
-	
+
 	/**
-	 * Adds the simple name of a class that is implicitly imported (e.g.,
-	 * because it resides in the same package as the class that is currently
-	 * generated). This can also be used to protect type parameters of the 
-	 * generated class to overlap with other types. Before this method is 
-	 * called, {@link #addImportsPlaceholder()} must be called.
+	 * Adds the simple name of a class that is implicitly imported (e.g., because it resides in the same package as the
+	 * class that is currently generated). This can also be used to protect type parameters of the generated class to
+	 * overlap with other types. Before this method is called, {@link #addImportsPlaceholder()} must be called.
 	 * 
 	 * @throws IllegalStateException
 	 *             if {@link #addImportsPlaceholder()} was not called before
@@ -521,14 +515,12 @@ public class JavaComposite extends StringComposite {
 	}
 
 	/**
-	 * Sets the import placeholder. This can be useful in rare cases where the
-	 * imports that are generated by this {@link JavaComposite} must be added to
-	 * another {@link JavaComposite}. Before this method is called,
+	 * Sets the import placeholder. This can be useful in rare cases where the imports that are generated by this
+	 * {@link JavaComposite} must be added to another {@link JavaComposite}. Before this method is called,
 	 * {@link #addImportsPlaceholder()} must not be called.
 	 * 
 	 * @throws IllegalStateException
-	 *             if {@link #addImportsPlaceholder()} or
-	 *             {@link #setImportsPlaceholder(ImportsPlaceholder)} was called
+	 *             if {@link #addImportsPlaceholder()} or {@link #setImportsPlaceholder(ImportsPlaceholder)} was called
 	 *             before.
 	 */
 	public void setImportsPlaceholder(ImportsPlaceholder importsPlaceholder) {
@@ -537,39 +529,39 @@ public class JavaComposite extends StringComposite {
 		}
 		this.importsPlaceholder = importsPlaceholder;
 	}
-	
+
 	public String STRING() {
 		return getClassName(String.class);
 	}
-	
+
 	public String SET() {
 		return getClassName(Set.class);
 	}
-	
+
 	public String MAP() {
 		return getClassName(Map.class);
 	}
-	
+
 	public String LINKED_HASH_MAP() {
 		return getClassName(LinkedHashMap.class);
 	}
-	
+
 	public String LIST() {
 		return getClassName(List.class);
 	}
-	
+
 	public String COLLECTION() {
 		return getClassName(Collection.class);
 	}
-	
+
 	public String ARRAY_LIST() {
 		return getClassName(ArrayList.class);
 	}
-	
+
 	public String LINKED_HASH_SET() {
 		return getClassName(LinkedHashSet.class);
 	}
-	
+
 	@Override
 	public StringComposite add(String text) {
 		StringComposite result = super.add(text);
@@ -588,17 +580,15 @@ public class JavaComposite extends StringComposite {
 	}
 
 	/**
-	 * Set the interface mode (i.e., whether to insert two line breaks after 
-	 * lines that end with a semicolon).
+	 * Set the interface mode (i.e., whether to insert two line breaks after lines that end with a semicolon).
 	 */
 	public void setInterfaceMode(boolean interfaceMode) {
 		this.interfaceMode = interfaceMode;
 	}
 
 	/**
-	 * Sets whether statements which are added using
-	 * {@link #addDebugStatement(String)} shall be included in the output or
-	 * not.
+	 * Sets whether statements which are added using {@link #addDebugStatement(String)} shall be included in the output
+	 * or not.
 	 */
 	public void setIncludeDebugStatements(boolean includeDebugStatements) {
 		this.includeDebugStatements = includeDebugStatements;

@@ -19,26 +19,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A {@link StringComposite} can be used to compose text fragments. In contrast
- * to a {@link StringBuilder} or {@link StringBuffer}, this class can enable and
- * disable text fragments. This is useful when text is composed, but unnecessary
- * parts need to be removed later.
+ * A {@link StringComposite} can be used to compose text fragments. In contrast to a {@link StringBuilder} or
+ * {@link StringBuffer}, this class can enable and disable text fragments. This is useful when text is composed, but
+ * unnecessary parts need to be removed later.
  * <p>
- * This class can be used by code generators to insert variable declarations
- * only if they are referenced.
+ * This class can be used by code generators to insert variable declarations only if they are referenced.
  */
 public class StringComposite {
-	
+
 	/**
 	 * A Node is the atomic part of a tree.
 	 */
 	public interface Node {
 		public Tree getParent();
 	}
-	
+
 	/**
-	 * A CompositeNode is part of a tree and contains exactly one
-	 * {@link StringComponent}.
+	 * A CompositeNode is part of a tree and contains exactly one {@link StringComponent}.
 	 */
 	public class ComponentNode implements Node {
 
@@ -59,13 +56,12 @@ public class StringComposite {
 			return component;
 		}
 	}
-	
+
 	/**
-	 * A Tree is a container for Nodes. Since trees are nodes as well, they can
-	 * contain further trees.
+	 * A Tree is a container for Nodes. Since trees are nodes as well, they can contain further trees.
 	 */
 	public class Tree implements Node {
-		
+
 		private final List<Node> children = new ArrayList<Node>();
 		private final Tree parent;
 
@@ -91,17 +87,15 @@ public class StringComposite {
 	}
 
 	/**
-	 * We do intentionally not use the platform specific line separation
-	 * character, because the files that are generated using this
-	 * {@link StringComposite} shall look the same on all platforms. Eclipse
-	 * does understand the different kinds of line separators anyway and treats
-	 * them correctly on all platforms.
+	 * We do intentionally not use the platform specific line separation character, because the files that are generated
+	 * using this {@link StringComposite} shall look the same on all platforms. Eclipse does understand the different
+	 * kinds of line separators anyway and treats them correctly on all platforms.
 	 */
 	public static final String UNIX_LINE_BREAK = "\n";
-	
+
 	private static final int MAX_TABS = 20;
 	private static final String[] TAB_STRINGS = new String[20];
-	
+
 	private final List<StringComponent> components = new ArrayList<StringComponent>();
 
 	private final List<String> lineBreakers = new ArrayList<String>();
@@ -120,7 +114,7 @@ public class StringComposite {
 		super();
 		this.enabled = enabled;
 	}
-	
+
 	public void addIndentationStarter(String starter) {
 		if (starter == null) {
 			throw new IllegalArgumentException("Can't use null as indentation starter.");
@@ -143,7 +137,7 @@ public class StringComposite {
 		add(getLineBreak());
 		return this;
 	}
-	
+
 	public StringComposite add(String text) {
 		StringComponent component = new StringComponent(text, null);
 		add(component);
@@ -158,21 +152,21 @@ public class StringComposite {
 		components.add(component);
 		return this;
 	}
-	
+
 	public void add(StringComposite other) {
 		components.addAll(other.components);
 	}
-	
+
 	@Override
 	public String toString() {
 		return toString(0, true);
 	}
-	
+
 	public String toString(int tabs, boolean doLineBreaks) {
 		StringBuilder builder = null;
-		
+
 		enableComponents();
-		
+
 		// then add enabled components to the builder
 		for (Component component : components) {
 			if (isIndendationStopper(component)) {
@@ -201,7 +195,7 @@ public class StringComposite {
 	public String getLineBreak() {
 		return lineBreak;
 	}
-	
+
 	public void setLineBreak(String lineBreak) {
 		this.lineBreak = lineBreak;
 	}
@@ -243,7 +237,7 @@ public class StringComposite {
 				disabledComponents.add(node);
 			}
 		}
-		
+
 		for (ComponentNode disabledComponent : disabledComponents) {
 			// deep search right siblings
 			List<Node> siblings = disabledComponent.getParent().getChildNodes();

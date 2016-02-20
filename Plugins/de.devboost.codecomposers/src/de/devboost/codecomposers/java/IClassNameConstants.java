@@ -26,7 +26,7 @@ import java.util.Set;
  * Constants for class names used in the generated code.
  */
 public interface IClassNameConstants {
-	
+
 	public String ARRAY_LIST = ArrayList.class.getName();
 	public String LINKED_HASH_MAP = LinkedHashMap.class.getName();
 	public String LINKED_HASH_SET = LinkedHashSet.class.getName();

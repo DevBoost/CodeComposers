@@ -16,8 +16,7 @@
 package de.devboost.codecomposers.util;
 
 /**
- * A typed pair of objects. Two pairs are equal if both the left and the right
- * object are equal.
+ * A typed pair of objects. Two pairs are equal if both the left and the right object are equal.
  * 
  * @param <T1>
  *            the type of the first (left) object
@@ -25,10 +24,10 @@ package de.devboost.codecomposers.util;
  *            the type of the second (right) object
  */
 public class Pair<T1, T2> {
-	
-	private final T1 left; 
+
+	private final T1 left;
 	private final T2 right;
-	
+
 	public Pair(T1 left, T2 right) {
 		super();
 		this.left = left;
@@ -60,7 +59,7 @@ public class Pair<T1, T2> {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Pair<?,?> other = (Pair<?,?>) obj;
+		Pair<?, ?> other = (Pair<?, ?>) obj;
 		if (left == null) {
 			if (other.left != null)
 				return false;

@@ -26,107 +26,46 @@ import java.util.Iterator;
 public class StringUtil {
 
 	public final static String HEX_DIGIT_REGEXP = "[0-9a-fA-F]";
-	public final static String UNICODE_SEQUENCE_REGEXP = "\\\\u" + HEX_DIGIT_REGEXP + HEX_DIGIT_REGEXP + HEX_DIGIT_REGEXP + HEX_DIGIT_REGEXP;
+	public final static String UNICODE_SEQUENCE_REGEXP = "\\\\u" + HEX_DIGIT_REGEXP + HEX_DIGIT_REGEXP
+			+ HEX_DIGIT_REGEXP + HEX_DIGIT_REGEXP;
 
 	/*
-	ESC	:	'\\'
-			(	'n'
-			|	'r'
-			|	't'
-			|	'b'
-			|	'f'
-			|	'"'
-			|	'\''
-			|	'\\'
-			|	'>'
-			|	'u' XDIGIT XDIGIT XDIGIT XDIGIT
-			|	. // unknown, leave as it is
-			)
-		;
-	*/
+	 * ESC : '\\' ( 'n' | 'r' | 't' | 'b' | 'f' | '"' | '\'' | '\\' | '>' | 'u' XDIGIT XDIGIT XDIGIT XDIGIT | . //
+	 * unknown, leave as it is ) ;
+	 */
 	public final static String ESC_OTHER = "\\\\(n|r|t|b|f|\"|'|>)";
 	public final static String ESC_REGEXP = "\\A((" + UNICODE_SEQUENCE_REGEXP + ")|(" + ESC_OTHER + ")).*";
 	public final static String UNICODE_SEQUENCE_START = "\\A(" + UNICODE_SEQUENCE_REGEXP + ")";
 
-	private static String[] RESERVED_WORDS = new String[] {
-		"abstract", 
-		"assert", 
-		"boolean", 
-		"break", 
-		"byte", 
-		"case", 
-		"catch", 
-		"char", 
-		"class", 
-		"const", 
-		"continue",  
-		"default", 
-		"do", 
-		"double", 
-		"else", 
-		"enum", 
-		"extends",
-		"false", 
-		"final", 
-		"finally", 
-		"float", 
-		"for", 
-		"goto", 
-		"if", 
-		"implements", 
-		"import", 
-		"instanceof", 
-		"int", 
-		"interface", 
-		"long", 
-		"native", 
-		"new", 
-		"null",
-		"package", 
-		"private", 
-		"protected", 
-		"public", 
-		"return", 
-		"short", 
-		"static", 
-		"strictfp", 
-		"super", 
-		"switch", 
-		"synchronized", 
-		"this", 
-		"throw", 
-		"throws", 
-		"transient",
-		"true",
-		"try", 
-		"void", 
-		"volatile", 
-		"while", 
-	};
-	
-	/**
-     * Capitalizes the first letter of the given string.
-     * 
-     * @param text a string.
-     * @return the modified string.
-     */
-    public static String capitalize(String text) {
-        String h = text.substring(0, 1).toUpperCase();
-        String t = text.substring(1);      
-        return h + t;
-    }
+	private static String[] RESERVED_WORDS = new String[] { "abstract", "assert", "boolean", "break", "byte", "case",
+			"catch", "char", "class", "const", "continue", "default", "do", "double", "else", "enum", "extends",
+			"false", "final", "finally", "float", "for", "goto", "if", "implements", "import", "instanceof", "int",
+			"interface", "long", "native", "new", "null", "package", "private", "protected", "public", "return",
+			"short", "static", "strictfp", "super", "switch", "synchronized", "this", "throw", "throws", "transient",
+			"true", "try", "void", "volatile", "while", };
 
-    /**
-     * Returns the part of 'tail' that is not present at the end of
-     * 'text'. For example if text = 'abc' and tail = 'cd' this method
-     * returns 'd'. If 'tail' can not be found at the end of 'text',
-     * 'tail' is returned as is.
-     * 
-     * @param text
-     * @param tail
-     * @return
-     */
-    public static String getMissingTail(String text, String tail) {
+	/**
+	 * Capitalizes the first letter of the given string.
+	 * 
+	 * @param text
+	 *            a string.
+	 * @return the modified string.
+	 */
+	public static String capitalize(String text) {
+		String h = text.substring(0, 1).toUpperCase();
+		String t = text.substring(1);
+		return h + t;
+	}
+
+	/**
+	 * Returns the part of 'tail' that is not present at the end of 'text'. For example if text = 'abc' and tail = 'cd'
+	 * this method returns 'd'. If 'tail' can not be found at the end of 'text', 'tail' is returned as is.
+	 * 
+	 * @param text
+	 * @param tail
+	 * @return
+	 */
+	public static String getMissingTail(String text, String tail) {
 		for (int i = 1; i < tail.length(); i++) {
 			int endIndex = text.length();
 			int end = Math.max(0, endIndex);
@@ -140,14 +79,14 @@ public class StringUtil {
 		return tail;
 	}
 
-    /**
-     * Converts a string that contains upper-case letter and
-     * underscores (e.g., constant names) to a camel-case string.
-     * For example, MY_CONSTANT is converted to myConstant.
-     * 
-     * @param text the string to convert
-     * @return
-     */
+	/**
+	 * Converts a string that contains upper-case letter and underscores (e.g., constant names) to a camel-case string.
+	 * For example, MY_CONSTANT is converted to myConstant.
+	 * 
+	 * @param text
+	 *            the string to convert
+	 * @return
+	 */
 	public static String convertAllCapsToLowerCamelCase(String text) {
 		String lowerCase = text.toLowerCase();
 		while (true) {
@@ -189,10 +128,9 @@ public class StringUtil {
 			}
 		});
 	}
-	
+
 	/**
-	 * Converts the given parts to strings using the converter and puts 
-	 * 'glue' between them.
+	 * Converts the given parts to strings using the converter and puts 'glue' between them.
 	 * 
 	 * @param parts
 	 * @param glue
@@ -226,15 +164,15 @@ public class StringUtil {
 		}
 		return tokenName;
 	}
-	
+
 	public static int getLine(String text, int offset) {
 		return getLineAndCharPosition(text, offset)[0];
 	}
-	
+
 	public static int getCharPositionInLine(String text, int offset) {
 		return getLineAndCharPosition(text, offset)[1];
 	}
-	
+
 	public static Integer[] getLineAndCharPosition(String text, int offset) {
 		int index = 0;
 		int line = 0;
@@ -253,7 +191,7 @@ public class StringUtil {
 				// found no EOL character
 				break;
 			}
-			
+
 			index = nextNorR + 1;
 			if (index == nextN) {
 				index++;
@@ -265,13 +203,13 @@ public class StringUtil {
 				break;
 			}
 		}
-		return new Integer[] {line, positionInLine};
+		return new Integer[] { line, positionInLine };
 	}
-	
+
 	public static String escapeQuotes(String s) {
 		s = s.replace("\\", "\\\\");
 		s = s.replace("\"", "\\\"");
-		
+
 		return s;
 	}
 
@@ -297,25 +235,20 @@ public class StringUtil {
 	}
 
 	/**
-	 * Escapes the given text such that it can be safely embedded in a string
-	 * literal in Java source code.
+	 * Escapes the given text such that it can be safely embedded in a string literal in Java source code.
 	 * 
-	 * @param text the text to escape
+	 * @param text
+	 *            the text to escape
 	 * @return the escaped text
 	 */
 	public static String escapeToJavaString(String text) {
 		if (text == null) {
 			return null;
 		}
-		//for javac: replace one backslash by two and escape double quotes
-		String result = text.replaceAll("\\\\", "\\\\\\\\").
-			replaceAll("\"", "\\\\\"").
-			replace("\b", "\\b").
-			replace("\f", "\\f").
-			replace("\n", "\\n").
-			replace("\r", "\\r").
-			replace("\t", "\\t");
-		
+		// for javac: replace one backslash by two and escape double quotes
+		String result = text.replaceAll("\\\\", "\\\\\\\\").replaceAll("\"", "\\\\\"").replace("\b", "\\b")
+				.replace("\f", "\\f").replace("\n", "\\n").replace("\r", "\\r").replace("\t", "\\t");
+
 		StringBuffer complete = new StringBuffer();
 		for (int i = 0; i < result.length(); i++) {
 			int codePointI = result.codePointAt(i);
@@ -333,10 +266,8 @@ public class StringUtil {
 	}
 
 	/**
-	 * Unescapes the given Java string. It converts the string as
-	 * it would be found in a Java file to its actual value that
-	 * can, for example, be printed to System.out. The following 
-	 * replacements are made:
+	 * Unescapes the given Java string. It converts the string as it would be found in a Java file to its actual value
+	 * that can, for example, be printed to System.out. The following replacements are made:
 	 * 
 	 * <ul>
 	 * <li>backslash double quote - double quote
@@ -344,10 +275,10 @@ public class StringUtil {
 	 * <li>backslash ('n', 'r', 't', 'b', 'f') - line break, return, tab, bell or \f
 	 * </ul>
 	 * 
-	 * The same behavior observed, when javac reads plain Java files 
-	 * with String literals.
+	 * The same behavior observed, when javac reads plain Java files with String literals.
 	 * 
-	 * @param text the string to unescape
+	 * @param text
+	 *            the string to unescape
 	 * @return
 	 */
 	public static String unescapeJavaString(String text) {
@@ -373,7 +304,8 @@ public class StringUtil {
 				// unicode sequence
 				assert tail.length() > 5;
 				String unicodeCharacter = tail.substring(0, 6);
-				UnicodeConverter converter = new UnicodeConverter(new ByteArrayInputStream(unicodeCharacter.getBytes()));
+				UnicodeConverter converter = new UnicodeConverter(
+						new ByteArrayInputStream(unicodeCharacter.getBytes()));
 				try {
 					byte[] bytes = new byte[8];
 					int next = converter.read();
@@ -399,14 +331,13 @@ public class StringUtil {
 		}
 		return result;
 	}
-	
+
 	/**
-	 * Escapes the given text such that it can be safely embedded in an
-	 * ANTLR grammar as keyword (i.e., an in-line token). Single quotes
-	 * are escaped using a backslash. Backslashes are escaped using a 
-	 * backslash.
+	 * Escapes the given text such that it can be safely embedded in an ANTLR grammar as keyword (i.e., an in-line
+	 * token). Single quotes are escaped using a backslash. Backslashes are escaped using a backslash.
 	 * 
-	 * @param value the text to escape
+	 * @param value
+	 *            the text to escape
 	 * @return the escaped text
 	 */
 	public static String escapeToANTLRKeyword(String value) {
@@ -417,35 +348,37 @@ public class StringUtil {
 		return text.matches(UNICODE_SEQUENCE_REGEXP);
 	}
 
-    /**
-     * Converts the first letter of the given string to lower case.
-     * 
-     * @param s a string
-     * @return the modified string.
-     */
-    public static String low(String s) {
-        String h = s.substring(0, 1).toLowerCase();
-        String t = s.substring(1);      
-        return h + t ;
-    }
+	/**
+	 * Converts the first letter of the given string to lower case.
+	 * 
+	 * @param s
+	 *            a string
+	 * @return the modified string.
+	 */
+	public static String low(String s) {
+		String h = s.substring(0, 1).toLowerCase();
+		String t = s.substring(1);
+		return h + t;
+	}
 
 	/**
-	 * Returns a valid identifier using the list of <code>RESERVED_WORDS</code>. If the given
-	 * identifier is a Java keywords it is prefixed with an underscore. Otherwise the identifier 
-	 * itself is returned. The identifier is also converted to lower string.
+	 * Returns a valid identifier using the list of <code>RESERVED_WORDS</code>. If the given identifier is a Java
+	 * keywords it is prefixed with an underscore. Otherwise the identifier itself is returned. The identifier is also
+	 * converted to lower string.
 	 * 
-	 * @param identifier an identifier.
+	 * @param identifier
+	 *            an identifier.
 	 * @return an identifier that does not lead to conflicts.
 	 */
-    public static String getLowerCase(String identifier) {
-    	identifier = identifier.toLowerCase();
-    	if (isReserveredWord(identifier)) {
-    		return "keyword" + identifier;
-    	}
-    	return identifier;
-    }
-    
-    public static boolean isReserveredWord(String identifier) {
+	public static String getLowerCase(String identifier) {
+		identifier = identifier.toLowerCase();
+		if (isReserveredWord(identifier)) {
+			return "keyword" + identifier;
+		}
+		return identifier;
+	}
+
+	public static boolean isReserveredWord(String identifier) {
 		for (String word : RESERVED_WORDS) {
 			if (word.toLowerCase().equals(identifier)) {
 				return true;
@@ -454,7 +387,7 @@ public class StringUtil {
 		return false;
 	}
 
-    public static String getRepeatingString(int count, char character) {
+	public static String getRepeatingString(int count, char character) {
 		StringBuffer result = new StringBuffer();
 		for (int i = 0; i < count; i++) {
 			result.append(character);
@@ -469,6 +402,6 @@ public class StringUtil {
 		if (text.length() == 1) {
 			return text.toLowerCase();
 		}
-		return text.substring(0,1).toLowerCase() + text.substring(1);
+		return text.substring(0, 1).toLowerCase() + text.substring(1);
 	}
 }

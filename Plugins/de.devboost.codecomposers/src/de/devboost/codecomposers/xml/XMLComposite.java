@@ -19,12 +19,11 @@ import de.devboost.codecomposers.Component;
 import de.devboost.codecomposers.StringComposite;
 
 /**
- * A {@link XMLComposite} is a custom {@link StringComposite} that can be used
- * to build XML documents.
+ * A {@link XMLComposite} is a custom {@link StringComposite} that can be used to build XML documents.
  */
 // TODO Pre-compile regular expressions
 public class XMLComposite extends StringComposite {
-	
+
 	public XMLComposite() {
 		super();
 		addLineBreaker(">");
@@ -32,9 +31,8 @@ public class XMLComposite extends StringComposite {
 
 	@Override
 	public boolean isIndendationStarter(Component component) {
-		boolean isStarter = component.toString().endsWith(">") &&
-			!component.toString().endsWith("?>") && 
-			!(isEndTag(component) || isCompactTag(component) || isTagOnOneLine(component));
+		boolean isStarter = component.toString().endsWith(">") && !component.toString().endsWith("?>")
+				&& !(isEndTag(component) || isCompactTag(component) || isTagOnOneLine(component));
 		return isStarter;
 	}
 
@@ -51,7 +49,7 @@ public class XMLComposite extends StringComposite {
 	private boolean isCompactTag(Component component) {
 		return component.toString().matches("<.*/>");
 	}
-	
+
 	private boolean isTagOnOneLine(Component component) {
 		return component.toString().matches("<.*>.*</.*>");
 	}

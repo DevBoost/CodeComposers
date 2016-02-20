@@ -24,16 +24,16 @@ import java.util.Set;
 import de.devboost.codecomposers.StringComponent;
 
 public class ImportsPlaceholder extends StringComponent {
-	
+
 	private final Set<Import> qualifiedImports = new LinkedHashSet<Import>();
 	private final Set<Import> implicitImports = new LinkedHashSet<Import>();
-	
+
 	private final String lineBreak;
 
 	public ImportsPlaceholder(String lineBreak) {
 		super(null, null);
 		this.lineBreak = lineBreak;
-		
+
 		for (Class<?> nextClass : JavaLangClasses.CLASSES_IN_JAVA_LANG_PACKAGE) {
 			addImplicitImport(nextClass.getName());
 		}
@@ -43,7 +43,7 @@ public class ImportsPlaceholder extends StringComponent {
 		if (isPrimitiveType(qualifiedClassName)) {
 			return qualifiedClassName;
 		}
-		
+
 		if (isGeneric(qualifiedClassName)) {
 			List<String> types = getTypeArguments(qualifiedClassName);
 			String typeParameters = types.get(1);
@@ -52,13 +52,13 @@ public class ImportsPlaceholder extends StringComponent {
 			result.append(getClassName(types.get(0)));
 			result.append("<");
 			for (int i = 0; i < typeParameterArray.length; i++) {
-				String typeParameter = typeParameterArray[i];				
+				String typeParameter = typeParameterArray[i];
 				if ("?".equals(typeParameter.trim())) {
 					result.append(typeParameter);
 				} else {
 					result.append(getClassName(typeParameter));
 				}
-				
+
 				boolean isNotLast = i < typeParameterArray.length - 1;
 				if (isNotLast) {
 					result.append(",");
@@ -67,7 +67,7 @@ public class ImportsPlaceholder extends StringComponent {
 			result.append(">");
 			return result.toString();
 		}
-		
+
 		return getName(qualifiedClassName, false);
 	}
 
@@ -76,8 +76,7 @@ public class ImportsPlaceholder extends StringComponent {
 	}
 
 	private String getName(String qualifiedName, boolean isStatic) {
-		if (contains(qualifiedImports, qualifiedName) ||
-			contains(implicitImports, qualifiedName)) {
+		if (contains(qualifiedImports, qualifiedName) || contains(implicitImports, qualifiedName)) {
 			String simpleName = getSimpleName(qualifiedName);
 			return simpleName;
 		} else {
@@ -116,7 +115,7 @@ public class ImportsPlaceholder extends StringComponent {
 		int end = qualifiedClassName.indexOf(">");
 		String type = qualifiedClassName.substring(0, begin);
 		String typeArgument = qualifiedClassName.substring(begin + 1, end);
-		
+
 		List<String> types = new ArrayList<String>(2);
 		types.add(type);
 		types.add(typeArgument);
@@ -128,12 +127,13 @@ public class ImportsPlaceholder extends StringComponent {
 	}
 
 	private boolean isPrimitiveType(String qualifiedClassName) {
-		
+
 		// Remove array qualifiers
 		qualifiedClassName = qualifiedClassName.replace("[", "");
 		qualifiedClassName = qualifiedClassName.replace("]", "");
-		
-		Class<?>[] primitiveTypes = new Class<?>[] {boolean.class, int.class, char.class, byte.class, long.class, double.class, float.class};
+
+		Class<?>[] primitiveTypes = new Class<?>[] { boolean.class, int.class, char.class, byte.class, long.class,
+				double.class, float.class };
 		for (Class<?> primitiveType : primitiveTypes) {
 			if (primitiveType.getName().equals(qualifiedClassName)) {
 				return true;
@@ -144,14 +144,13 @@ public class ImportsPlaceholder extends StringComponent {
 
 	private boolean isNameImported(String qualifiedClassName) {
 		String simpleName = getSimpleName(qualifiedClassName);
-		return containsSimpleName(qualifiedImports, simpleName) ||
-				containsSimpleName(implicitImports, simpleName);
+		return containsSimpleName(qualifiedImports, simpleName) || containsSimpleName(implicitImports, simpleName);
 	}
 
 	private String getSimpleName(String qualifiedClassName) {
 		return qualifiedClassName.substring(qualifiedClassName.lastIndexOf(".") + 1);
 	}
-	
+
 	@Override
 	public String getText() {
 		List<String> imports = new ArrayList<String>();
@@ -168,9 +167,9 @@ public class ImportsPlaceholder extends StringComponent {
 			boolean isStatic = qualifiedImport.isStatic();
 			imports.add((isStatic ? "static " : "") + qualifiedName);
 		}
-		
+
 		Collections.sort(imports);
-		
+
 		StringBuilder text = new StringBuilder();
 		for (String importToAdd : imports) {
 			text.append("import ");

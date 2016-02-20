@@ -19,8 +19,7 @@ import de.devboost.codecomposers.StringComposite;
 import de.devboost.codecomposers.java.JavaComposite;
 
 /**
- * A {@link ANTLRGrammarComposite} is a custom {@link StringComposite} that can
- * be used to build grammars for ANTLR.
+ * A {@link ANTLRGrammarComposite} is a custom {@link StringComposite} that can be used to build grammars for ANTLR.
  */
 public class ANTLRGrammarComposite extends JavaComposite {
 

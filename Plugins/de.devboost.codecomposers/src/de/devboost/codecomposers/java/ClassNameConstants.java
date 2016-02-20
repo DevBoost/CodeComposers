@@ -64,9 +64,8 @@ public class ClassNameConstants {
 		return getClassName(jc, Set.class.getName());
 	}
 
-	public static String getClassName(JavaComposite jc,
-			String qualifiedClassName) {
-		
+	public static String getClassName(JavaComposite jc, String qualifiedClassName) {
+
 		if (jc == null) {
 			return qualifiedClassName;
 		}
