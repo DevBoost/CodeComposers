@@ -7,6 +7,7 @@ Bundle-Vendor: DevBoost GmbH
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: de.devboost.codecomposers,
  de.devboost.codecomposers.antlr,
+ de.devboost.codecomposers.csharp,
  de.devboost.codecomposers.java,
  de.devboost.codecomposers.manifest,
  de.devboost.codecomposers.util,
