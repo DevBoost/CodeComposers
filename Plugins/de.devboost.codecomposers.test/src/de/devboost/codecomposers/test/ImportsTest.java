@@ -22,6 +22,7 @@ import java.lang.reflect.Field;
 
 import org.junit.Test;
 
+import de.devboost.codecomposers.csharp.CSharpImportsPlaceholder;
 import de.devboost.codecomposers.java.JavaComposite;
 
 public class ImportsTest {
@@ -41,6 +42,25 @@ public class ImportsTest {
 			"import com.pany.OtherClass;" +
 			"public class MyClass {" +
 			"OtherClass myField;" +
+			"}"
+		);
+	}
+	
+	@Test
+	public void testAlternativeImportPlaceholder() {
+		JavaComposite jc = new JavaComposite();
+		jc.addImportsPlaceholder(new CSharpImportsPlaceholder(jc.getLineBreak()));
+		jc.add("public class MyClass {");
+		jc.add(jc.getClassName("com.pany.OtherClass") +  " myField;");
+		jc.add(jc.getClassName("com.pany.OtherClass2") +  " myField2;");
+		jc.add("}");
+		
+		String result = getCleanResult(jc);
+		assertEquals(result, 
+			"using com.pany;" +
+			"public class MyClass {" +
+			"OtherClass myField;" +
+			"OtherClass2 myField2;" +
 			"}"
 		);
 	}

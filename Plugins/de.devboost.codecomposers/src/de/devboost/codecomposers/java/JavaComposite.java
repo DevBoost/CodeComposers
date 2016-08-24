@@ -434,6 +434,10 @@ public class JavaComposite extends StringComposite {
 		addLineBreak();
 	}
 
+	public void addImportsPlaceholder() {
+		addImportsPlaceholder(new ImportsPlaceholder(getLineBreak()));
+	}
+
 	/**
 	 * Adds a placeholder where the required import statements will be inserted later on. This must must be called at
 	 * most once.
@@ -441,11 +445,11 @@ public class JavaComposite extends StringComposite {
 	 * @throws IllegalStateException
 	 *             if method is called more than once.
 	 */
-	public void addImportsPlaceholder() {
+	public void addImportsPlaceholder(ImportsPlaceholder importsPlaceholder) {
 		if (this.importsPlaceholder != null) {
 			throw new IllegalStateException("Can't add placeholder for imports twice.");
 		}
-		this.importsPlaceholder = new ImportsPlaceholder(getLineBreak());
+		this.importsPlaceholder = importsPlaceholder;
 		add(this.importsPlaceholder);
 	}
 

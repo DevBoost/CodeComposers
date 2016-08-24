@@ -25,10 +25,10 @@ import de.devboost.codecomposers.StringComponent;
 
 public class ImportsPlaceholder extends StringComponent {
 
-	private final Set<Import> qualifiedImports = new LinkedHashSet<Import>();
-	private final Set<Import> implicitImports = new LinkedHashSet<Import>();
+	protected final Set<Import> qualifiedImports = new LinkedHashSet<Import>();
+	protected final Set<Import> implicitImports = new LinkedHashSet<Import>();
 
-	private final String lineBreak;
+	protected final String lineBreak;
 
 	public ImportsPlaceholder(String lineBreak) {
 		super(null, null);
